@@ -668,7 +668,7 @@ contract NeoPool is Ownable {
         uint256 rewardDebt; // Reward debt. See explanation below.
     }
 
-    uint public period = 691200;
+    uint public period = 691200; // reward period of 7 days + 1 day of padding to be safe
     IERC20 public pills = 0xB66b5D38E183De42F21e92aBcAF3c712dd5d6286;    
     IERC20 public wftm = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
 
@@ -766,7 +766,7 @@ contract NeoPool is Ownable {
         uint256 rewardSupply = wftm.balanceOf(address(this));
         if (rewardSupply == 0) return;
 
-        // amount of seconds in a week + 1/3 day padding in case of network congestion
+        // amount of seconds in a week + 1 day padding in case of network congestion
         // don't want to run out of that good good
         uint256 rewardPerSec = rewardSupply.div(period);
 
