@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 
+/**
+ *Submitted for verification at FtmScan.com on 2021-09-19
+*/
+
 pragma solidity >=0.4.0;
 
 /**
@@ -666,18 +670,23 @@ contract NeoPool is Ownable {
     struct UserInfo {
         uint256 amount;     // How many LP tokens the user has provided.
         uint256 rewardDebt; // Reward debt. See explanation below.
+
+        // 3.4
+        uint256 initTimestamp;
     }
 
-    uint public period = 691200; // reward period of 7 days + 1 day of padding to be safe
-    IERC20 public pills = 0xB66b5D38E183De42F21e92aBcAF3c712dd5d6286;    
-    IERC20 public wftm = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
+    uint public period = 691200;
+    IERC20 public pills; // = 0xB66b5D38E183De42F21e92aBcAF3c712dd5d6286;    
+    IERC20 public wftm; // = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
 
     // uint256 allocPoint;       // How many allocation points assigned to this pool. MORPHs to distribute per second.
     uint256 lastRewardTimestamp;  // Last block number that MORPHs distribution occurs.
     uint256 accMorphPerShare; // Accumulated MORPHs per share, times 1e12. See below.
 
-
     mapping (address => UserInfo) public userInfo;
+
+    // 3.4
+    address[] userAddresses;
 
 
     // dynamic accMorphPerShare
@@ -690,12 +699,12 @@ contract NeoPool is Ownable {
     event EmergencyWithdraw(address indexed user, uint256 amount);
 
     constructor(
-        // IERC20 _pills,
-        // IERC20 _wftm,
+        IERC20 _stakingToken,
+        IERC20 _rewardToken,
     ) public {
         // for testing
-        // wftm = _wftm;
-        // pills = _pills;
+        pills = _stakingToken;
+        wftm = _rewardToken;
 
 
         lastRewardTimestamp = block.timestamp;
@@ -712,14 +721,18 @@ contract NeoPool is Ownable {
     function getRewardRate() public view returns (uint rewards) {
         for (uint j = 0; j < rewardUpdateTimestamps.length; j++) {
             uint256 multiplier = 0;
+            // if we are at the end of the rewardUpdateTimestamps
             if (j == rewardUpdateTimestamps.length - 2) {
                 // if we have reached the end of the rewards
+                // i.e oracle didnt trigger update in time, because continuity is expected
                 if(rewardUpdateTimestamps[j + 1] <= block.timestamp)
                     multiplier = rewardUpdateTimestamps[j + 1] - lastRewardTimestamp;
+
                 // if the last reward timestamp was before a new segment started
                 // the time since the start of this segment
                 else if(lastRewardTimestamp <= rewardUpdateTimestamps[j])
                     multiplier = block.timestamp - rewardUpdateTimestamps[j];
+
                 // if the last reward timestamp was in the current segment
                 // the time since last reward timestamp
                 else
@@ -732,12 +745,13 @@ contract NeoPool is Ownable {
 
             // if the last reward timestamp was after this segment
             // it means we've already added this segment
-            else if (rewardUpdateTimestamps[j] <= lastRewardTimestamp && rewardUpdateTimestamps[j + 1] <= lastRewardTimestamp) continue;
+            else if (rewardUpdateTimestamps[j + 1] <= lastRewardTimestamp) continue;
 
-            // if we haven't added this segment
-            // add the full segment
+            // if we haven't added this segment fully
+            // add in remaining blocks
+            // 3.5
             else if (rewardUpdateTimestamps[j + 1] <= block.timestamp)
-                multiplier = rewardUpdateTimestamps[j + 1] - rewardUpdateTimestamps[j];
+                multiplier = rewardUpdateTimestamps[j + 1] - lastRewardTimestamp;
 
             rewards = rewards.add(multiplier.mul(rewardSegments[rewardUpdateTimestamps[j]]));
         }
@@ -757,6 +771,17 @@ contract NeoPool is Ownable {
         return user.amount.mul(_accMorphPerShare).div(1e12).sub(user.rewardDebt);
     }
 
+    function updatePeriod(uint _period) public onlyOwner {
+        period = _period;
+    }
+
+    // 3.4
+    // returns the total amount of outstanding rewards that still need to be paid
+    function outstandingRewards() view returns (uint256 outstanding) {
+        for(uint j = 0; j < userAddresses.length; j++)
+            outstanding = outstanding.add(pendingReward(userAddresses[j]));
+    }
+
     // constant neo
     function updateRewardPerSec() public {
         require(msg.sender == oracle || msg.sender == owner(), "Only the oracle or Neo himself can get through...");
@@ -766,7 +791,9 @@ contract NeoPool is Ownable {
         uint256 rewardSupply = wftm.balanceOf(address(this));
         if (rewardSupply == 0) return;
 
-        // amount of seconds in a week + 1 day padding in case of network congestion
+        rewardSupply = rewardSupply.sub(outstandingRewards());
+
+        // amount of seconds in a week + 1/3 day padding in case of network congestion
         // don't want to run out of that good good
         uint256 rewardPerSec = rewardSupply.div(period);
 
@@ -812,6 +839,12 @@ contract NeoPool is Ownable {
     // Stake SYRUP tokens to SmartChef
     function deposit(uint256 _amount) public {
         UserInfo storage user = userInfo[msg.sender];
+
+        // 3.4
+        if(user.initTimestamp == 1) {
+            user.initTimestamp = block.timestamp;
+            userAddresses[msg.sender];
+        }
 
         updatePool();
         if (user.amount > 0) {

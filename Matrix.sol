@@ -256,18 +256,22 @@ contract Matrix is Ownable {
         // Interactions
         // X1 - X5: OK
         (uint256 reserve0, uint256 reserve1, ) = pair.getReserves();
-        uint256 amountInWithFee = amountIn.mul(997);
+
+        // 3.3
+        uint256 amountInWithFee = amountIn.mul(9985);
         if (fromToken == pair.token0()) {
+            // 3.3
             amountOut =
                 amountInWithFee.mul(reserve1) /
-                reserve0.mul(1000).add(amountInWithFee);
+                reserve0.mul(10000).add(amountInWithFee);
             IERC20(fromToken).safeTransfer(address(pair), amountIn);
             pair.swap(0, amountOut, to, new bytes(0));
             // TODO: Add maximum slippage?
         } else {
+            // 3.3
             amountOut =
                 amountInWithFee.mul(reserve0) /
-                reserve1.mul(1000).add(amountInWithFee);
+                reserve1.mul(10000).add(amountInWithFee);
             IERC20(fromToken).safeTransfer(address(pair), amountIn);
             pair.swap(amountOut, 0, to, new bytes(0));
             // TODO: Add maximum slippage?
