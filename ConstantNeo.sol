@@ -841,7 +841,7 @@ contract NeoPool is Ownable {
         UserInfo storage user = userInfo[msg.sender];
 
         // 3.4
-        if(user.initTimestamp == 1) {
+        if(user.initTimestamp == 0) {
             user.initTimestamp = block.timestamp;
             userAddresses[msg.sender];
         }
