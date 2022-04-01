@@ -672,7 +672,7 @@ contract NeoPool is Ownable {
         uint256 rewardDebt; // Reward debt. See explanation below.
 
         // 3.4
-        uint256 initTimestamp;
+        // uint256 initTimestamp;
     }
 
     uint public period = 691200;
@@ -686,7 +686,7 @@ contract NeoPool is Ownable {
     mapping (address => UserInfo) public userInfo;
 
     // 3.4
-    address[] userAddresses;
+    // address[] userAddresses;
 
 
     // dynamic accMorphPerShare
@@ -776,22 +776,29 @@ contract NeoPool is Ownable {
     }
 
     // 3.4
-    // returns the total amount of outstanding rewards that still need to be paid
+    // returns the total amount of outstanding rewards from the current segment
     function outstandingRewards() view returns (uint256 outstanding) {
-        for(uint j = 0; j < userAddresses.length; j++)
-            outstanding = outstanding.add(pendingReward(userAddresses[j]));
+        uint segment0Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
+        uint segment1Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1];
+        if(segment1Timestamp >= block.timestamp) {
+            outstanding = 0;
+        } else {
+            uint timeRemaining = segment1Timestamp - block.timestamp - 1;
+            uint rewardPerSec = rewardSegments[segment0Timestamp];
+            outstanding = timeRemaining * rewardPerSec;
+        }
     }
 
     // constant neo
-    function updateRewardPerSec() public {
+    function updateRewardPerSec(uint256 newAmount) public {
         require(msg.sender == oracle || msg.sender == owner(), "Only the oracle or Neo himself can get through...");
 
         // uint256 pillsSupply = pills.balanceOf(address(this));
         // if (pillsSupply == 0) return;
-        uint256 rewardSupply = wftm.balanceOf(address(this));
-        if (rewardSupply == 0) return;
+        uint256 balance = wftm.balanceOf(address(this));
+        if (balance == 0) return;
 
-        rewardSupply = rewardSupply.sub(outstandingRewards());
+        uint rewardSupply = newAmount.add(outstandingRewards());
 
         // amount of seconds in a week + 1/3 day padding in case of network congestion
         // don't want to run out of that good good
@@ -841,10 +848,10 @@ contract NeoPool is Ownable {
         UserInfo storage user = userInfo[msg.sender];
 
         // 3.4
-        if(user.initTimestamp == 0) {
-            user.initTimestamp = block.timestamp;
-            userAddresses[msg.sender];
-        }
+        // if(user.initTimestamp == 0) {
+        //     user.initTimestamp = block.timestamp;
+        //     userAddresses[msg.sender];
+        // }
 
         updatePool();
         if (user.amount > 0) {

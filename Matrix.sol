@@ -29,7 +29,9 @@ contract Matrix is Ownable {
     address public multisig;
     address public oracle;
 
-    ConstantNeo public neo;
+
+    // ConstantNeo public neo;
+    address public neo;
 
     // V1 - V5: OK
     address private immutable wftm;
@@ -64,7 +66,7 @@ contract Matrix is Ownable {
         multisig = _multisig;
         oracle = _oracle;
         wftm = _wftm;
-        neo = ConstantNeo(_neo);
+        neo = _neo;
     }
 
     // add new recipient
@@ -148,10 +150,12 @@ contract Matrix is Ownable {
 
         // send any extra wftm in contract's balance to rev share
         uint balance = IERC20(wftm).balanceOf(address(this));
-        if (0 < balance) _distributeFTM(balance);
+        uint256 amountToNeo;
+        if (0 < balance) 
+            (,amountToNeo) = _distributeFTM(balance);
 
         // call update reward per sec
-        neo.updateRewardPerSec();
+        ConstantNeo(neo).updateRewardPerSec(amountToNeo);
     }
 
     // F1 - F10: OK
@@ -203,9 +207,9 @@ contract Matrix is Ownable {
                 wftmOut = _convertStep(bridge, bridge, amount, 0);
             }
         } else if (token0 == wftm) {
-            wftmOut = _distributeFTM(_swap(token1, wftm, amount1, address(this)).add(amount0));
+            (wftmOut,) = _distributeFTM(_swap(token1, wftm, amount1, address(this)).add(amount0));
         } else if (token1 == wftm) {
-            wftmOut = _distributeFTM(_swap(token0, wftm, amount0, address(this)).add(amount1));
+            (wftmOut,) = _distributeFTM(_swap(token0, wftm, amount0, address(this)).add(amount1));
         } else {
             // eg. DAI - MIM
             address bridge0 = bridgeFor(token0);
@@ -282,13 +286,18 @@ contract Matrix is Ownable {
     // C1 - C24: OK
     function _distributeFTM(uint256 amount)
         internal
-        returns (uint256 amountOut)
+        returns (uint256 amountOut, uint256 amountToNeo)
     {
         uint _totalPoints = totalPoints();
 
         // X1 - X5: OK
-        for(uint j = 0; j < addresses.length; j++)
+        for(uint j = 0; j < addresses.length; j++) {
+            // return the amount going to the neo contract
+            if(address(addresses[j]) == neo) 
+                amountToNeo = (points[j] * amount).div(_totalPoints);
+                
             IERC20(wftm).safeTransfer(address(addresses[j]), (points[j] * amount).div(_totalPoints));
+        }
 
         amountOut = amount;
     }
