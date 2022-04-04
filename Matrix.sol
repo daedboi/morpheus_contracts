@@ -131,8 +131,9 @@ contract Matrix is Ownable {
         _;
     }
 
-    function convert(address token0, address token1) external onlyZion {
-        _convert(token0, token1);
+    // pC1
+    function convert(address token0, address token1) external onlyZion returns (uint) {
+        return _convert(token0, token1);
     }
 
     // F1 - F10: OK, see convert
@@ -144,23 +145,39 @@ contract Matrix is Ownable {
     ) external onlyZion {
         // TODO: This can be optimized a fair bit, but this is safer and simpler for now
         uint256 len = token0.length;
+        uint totalAmount;
+
+        // pC1
         for (uint256 i = 0; i < len; i++) {
-            _convert(token0[i], token1[i]);
+            totalAmount += _convert(token0[i], token1[i]);
         }
 
         // send any extra wftm in contract's balance to rev share
         uint balance = IERC20(wftm).balanceOf(address(this));
         uint256 amountToNeo;
-        if (0 < balance) 
-            (,amountToNeo) = _distributeFTM(balance);
+        // if (0 < balance) 
+            // (,amountToNeo) =
+        totalAmount += _distributeFTM(balance);
+
+
+        // X1 - X5: OK
+        // pC1
+        uint j = 0;
+        for(uint j = 0; j < addresses.length; j++) 
+            if(addresses[j] == neo) break;
+            else continue;
+        // pC1
+        uint _totalPoints = totalPoints();
+        uint256 neoAmount = (points[j] * totalAmount).div(_totalPoints);
 
         // call update reward per sec
-        ConstantNeo(neo).updateRewardPerSec(amountToNeo);
+        ConstantNeo(neo).updateRewardPerSec(neoAmount);
     }
 
     // F1 - F10: OK
     // C1- C24: OK
-    function _convert(address token0, address token1) internal {
+    // pC1
+    function _convert(address token0, address token1) internal returns (uint amountOut) {
         // Interactions
         // S1 - S4: OK
         IUniswapV2Pair pair = IUniswapV2Pair(factory.getPair(token0, token1));
@@ -176,13 +193,15 @@ contract Matrix is Ownable {
         if (token0 != pair.token0()) {
             (amount0, amount1) = (amount1, amount0);
         }
+        // pC1
+        amountOut = _convertStep(token0, token1, amount0, amount1);
         emit LogConvert(
             msg.sender,
             token0,
             token1,
             amount0,
             amount1,
-            _convertStep(token0, token1, amount0, amount1)
+            amountOut
         );
     }
 
@@ -207,9 +226,9 @@ contract Matrix is Ownable {
                 wftmOut = _convertStep(bridge, bridge, amount, 0);
             }
         } else if (token0 == wftm) {
-            (wftmOut,) = _distributeFTM(_swap(token1, wftm, amount1, address(this)).add(amount0));
+            wftmOut = _distributeFTM(_swap(token1, wftm, amount1, address(this)).add(amount0));
         } else if (token1 == wftm) {
-            (wftmOut,) = _distributeFTM(_swap(token0, wftm, amount0, address(this)).add(amount1));
+            wftmOut = _distributeFTM(_swap(token0, wftm, amount0, address(this)).add(amount1));
         } else {
             // eg. DAI - MIM
             address bridge0 = bridgeFor(token0);
@@ -286,18 +305,13 @@ contract Matrix is Ownable {
     // C1 - C24: OK
     function _distributeFTM(uint256 amount)
         internal
-        returns (uint256 amountOut, uint256 amountToNeo)
+        returns (uint256 amountOut)
     {
         uint _totalPoints = totalPoints();
 
         // X1 - X5: OK
-        for(uint j = 0; j < addresses.length; j++) {
-            // return the amount going to the neo contract
-            if(address(addresses[j]) == neo) 
-                amountToNeo = (points[j] * amount).div(_totalPoints);
-                
+        for(uint j = 0; j < addresses.length; j++) 
             IERC20(wftm).safeTransfer(address(addresses[j]), (points[j] * amount).div(_totalPoints));
-        }
 
         amountOut = amount;
     }

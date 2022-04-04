@@ -778,12 +778,15 @@ contract NeoPool is Ownable {
     // 3.4
     // returns the total amount of outstanding rewards from the current segment
     function outstandingRewards() view returns (uint256 outstanding) {
+        // pC2
+        if(rewardUpdateTimestamps.length == 0) return 0;
+
         uint segment0Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
         uint segment1Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1];
         if(segment1Timestamp >= block.timestamp) {
             outstanding = 0;
         } else {
-            uint timeRemaining = segment1Timestamp - block.timestamp - 1;
+            uint timeRemaining = segment1Timestamp - block.timestamp;
             uint rewardPerSec = rewardSegments[segment0Timestamp];
             outstanding = timeRemaining * rewardPerSec;
         }
