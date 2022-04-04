@@ -986,7 +986,7 @@ contract Zap is Ownable, IZap {
         _approveTokenIfNeeded(_from, routerAddr);
 
         if (isFeeOnTransfer[_from]) {
-            IERC20(_from).transferFrom(msg.sender, address(this), amount);
+            IERC20(_from).safeTransferFrom(msg.sender, address(this), amount);
             _swapTokenToLP(_from, IERC20(_from).balanceOf(address(this)), _to, _recipient, routerAddr);
             return;
         } else {
@@ -1224,9 +1224,12 @@ contract Zap is Ownable, IZap {
             path[1] = router.WETH();
         }
 
+        // p3.7
         if (isFeeOnTransfer[token]) {
-            router.swapExactTokensForETHSupportingFeeOnTransferTokens(amount, 0, path, recipient, block.timestamp);
-            return IERC20(token).balanceOf(address(this));
+            router.swapExactTokensForETHSupportingFeeOnTransferTokens(amount, 0, path, address(this), block.timestamp);
+            uint amountOut = IERC20(token).balanceOf(address(this));
+            IERC20(token).safeTransfer(recipient, amountOut);
+            return amountOut;
         } else {
             uint[] memory amounts = router.swapExactTokensForETH(amount, 0, path, recipient, block.timestamp);
             return amounts[amounts.length - 1];
@@ -1305,9 +1308,12 @@ contract Zap is Ownable, IZap {
 
         uint[] memory amounts;
 
+        // p3.5
         if (isFeeOnTransfer[_from]) {
-            router.swapExactTokensForTokensSupportingFeeOnTransferTokens(amount, 0, path, recipient, block.timestamp);
-            return IERC20(_to).balanceOf(address(this));
+            router.swapExactTokensForTokensSupportingFeeOnTransferTokens(amount, 0, path, address(this), block.timestamp);
+            uint amountOut = IERC20(_to).balanceOf(address(this));
+            IERC20(_to).safeTransfer(recipient, amountOut);
+            return amountOut;
         } else {
             amounts = router.swapExactTokensForTokens(amount, 0, path, recipient, block.timestamp);
         }
@@ -1398,11 +1404,11 @@ contract Zap is Ownable, IZap {
 
     function withdraw(address token) external onlyOwner {
         if (token == address(0)) {
-            payable(owner()).transfer(address(this).balance);
+            payable(owner()).safeTransfer(address(this), balance);
             return;
         }
 
-        IERC20(token).transfer(owner(), IERC20(token).balanceOf(address(this)));
+        IERC20(token).safeTransfer(owner(), IERC20(token).balanceOf(address(this)));
     }
 
     function setUseNativeRouter(address router) external onlyOwner {
