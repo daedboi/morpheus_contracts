@@ -1227,7 +1227,7 @@ contract Zap is Ownable, IZap {
         // p3.7
         if (isFeeOnTransfer[token]) {
             router.swapExactTokensForETHSupportingFeeOnTransferTokens(amount, 0, path, address(this), block.timestamp);
-            uint amountOut = IERC20(token).balanceOf(address(this));
+            uint amountOut = IERC20(router.WETH()).balanceOf(address(this));
             IERC20(token).safeTransfer(recipient, amountOut);
             return amountOut;
         } else {
