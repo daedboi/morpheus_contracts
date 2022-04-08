@@ -795,7 +795,7 @@ contract NeoPool is Ownable {
     // constant neo
     function updateRewardPerSec(uint256 newAmount) public {
         require(msg.sender == oracle || msg.sender == owner(), "Only the oracle or Neo himself can get through...");
-        require(block.timestamp > lastTimestamp);
+        require(block.timestamp > lastRewardTimestamp);
 
         // uint256 pillsSupply = pills.balanceOf(address(this));
         // if (pillsSupply == 0) return;
