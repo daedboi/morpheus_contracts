@@ -680,6 +680,7 @@ contract NeoPool is Ownable {
     IERC20 public wftm; // = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
 
     // uint256 allocPoint;       // How many allocation points assigned to this pool. MORPHs to distribute per second.
+    uint256 lastUpdateTimestamp;
     uint256 lastRewardTimestamp;  // Last block number that MORPHs distribution occurs.
     uint256 accMorphPerShare; // Accumulated MORPHs per share, times 1e12. See below.
 
@@ -795,7 +796,8 @@ contract NeoPool is Ownable {
     // constant neo
     function updateRewardPerSec(uint256 newAmount) public {
         require(msg.sender == oracle || msg.sender == owner(), "Only the oracle or Neo himself can get through...");
-        require(block.timestamp > lastRewardTimestamp);
+        require(block.timestamp > lastUpdateTimestamp);
+        lastUpdateTimestamp = block.timestamp;
 
         // uint256 pillsSupply = pills.balanceOf(address(this));
         // if (pillsSupply == 0) return;
