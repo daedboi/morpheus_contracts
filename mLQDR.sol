@@ -1165,7 +1165,7 @@ contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionG
 	}
 
     /**
-     * coltrane notes
+     * morpheus notes
      * 1 LQDR token is needed before contract is initialized
      * to initialize XLQDR account and deposit the 1 LQDR token
      * sets lockup to max time
@@ -1201,7 +1201,7 @@ contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionG
 	}
 
     /**
-     * coltrane notes
+     * morpheus notes
      * removing shares, so now it's just 1 : 1, xLQDR <=> mLQDR
      */
 	function deposit(uint256 _amount) external nonReentrant nonEmergency
@@ -1252,7 +1252,7 @@ contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionG
 	}
 
     /**
-     * coltrane notes
+     * morpheus notes
      *
      * update lock time to 2 years from latest deposit to get max rewards
      */
@@ -1280,7 +1280,7 @@ contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionG
 pragma solidity 0.8.9;
 
 
-// ** coltrane notes **
+// ** morpheus notes **
 // this is used to start the xLQDR lock up account
 // address is needed to transfer funds to contract before deploying it, 
 // because in constructor it expects to have 1 LQDR to deposit to initialize xLQDR account
