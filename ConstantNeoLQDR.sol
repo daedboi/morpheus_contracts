@@ -659,21 +659,8 @@ pragma solidity 0.6.12;
 
 
 interface IMasterChef {
-    using BoringERC20 for IERC20;
-    struct UserInfo {
-        uint256 amount;     // How many LP tokens the user has provided.
-        uint256 rewardDebt; // Reward debt. See explanation below.
-    }
+    // using BoringERC20 for IERC20;
 
-    struct PoolInfo {
-        IERC20 lpToken;           // Address of LP token contract.
-        uint256 allocPoint;       // How many allocation points assigned to this pool. MORPH to distribute per block.
-        uint256 lastRewardTime;  // Last block number that MORPH distribution occurs.
-        uint256 accSushiPerShare; // Accumulated MORPH per share, times 1e12. See below.
-    }
-
-    function poolInfo(uint256 pid) external view returns (IMasterChef.PoolInfo memory);
-    function totalAllocPoint() external view returns (uint256);
     function deposit(uint256 _pid, uint256 _amount) external;
 }
 
@@ -701,20 +688,20 @@ contract NeoPool is Ownable {
         uint256 rewardDebtMorph; // Reward debt. See explanation below.
     }
 
-    uint public period = 691200;
-    IERC20 public morph = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
-    IERC20 public lqdr = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
-    IERC20 public mlqdrlp = 0xB66b5D38E183De42F21e92aBcAF3c712dd5d6286;   
-    IERC20 public mlqdr = 0xB66b5D38E183De42F21e92aBcAF3c712dd5d6286;    
-    // IERC20 public wftm = 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83;
+    uint public period = 90000; // 25 hours
+    address public morph = 0xDa4062Cf984A861FeBF3cA698f8000AF405B2F0c;
+    address public lqdr = 0x3B382Cc4542eec36Ec4A38Fd227F7cD88e888195;
+    address public mlqdrlp = 0xe3c1eBa1FE820003B3a4A82a77cbA19EC856595e;   
+    address public mlqdr = 0x2f3Bc470A3231A6BB844E70eFAE147CA3c8dc43D;    
+    address public wftm = 0x07B9c47452C41e8E00f98aC4c075F5c443281d2A;
 
     // uint256 allocPoint;       // How many allocation points assigned to this pool. MORPHs to distribute per second.
     uint256 lastUpdateTimestamp;
     uint256 lastRewardTimestamp;  // Last block number that MORPHs distribution occurs.
     uint256 accMorphPerShare; // Accumulated MORPHs per share, times 1e12. See below.
-    uint256 accLqdrPerShare;
+    uint256 accWFTMPerShare;
 
-    address masterchef = _masterchef;
+    address masterchef = 0x1F0EECfb213D78d09635b57b5639F4Beb81b75d4;
     uint masterchef_pid;
 
     mapping (address => UserInfo) public userInfo;
@@ -726,7 +713,7 @@ contract NeoPool is Ownable {
     // dynamic accMorphPerShare
     uint256[] public rewardUpdateTimestamps;
     // block.timestamp => rewardPerSec during that reward segement
-    mapping(uint256 => uint256) public lqdrRewardSegments;
+    mapping(uint256 => uint256) public wftmRewardSegments;
 
     // block.timestamp => rewardPerSec during that reward segement
     mapping(uint256 => uint256) public morphRewardSegments;
@@ -735,8 +722,8 @@ contract NeoPool is Ownable {
     event Withdraw(address indexed user, address token, uint256 amount);
     event EmergencyWithdraw(address indexed user, uint256 amount);
 
-    constructor(address _masterchef) public {
-        masterchef = _masterchef;
+    constructor() public {
+        // masterchef = _masterchef;
         // for testing
         // pills = _stakingToken;
         // wftm = _rewardToken;
@@ -744,7 +731,7 @@ contract NeoPool is Ownable {
 
         lastRewardTimestamp = block.timestamp;
         accMorphPerShare = 0;
-        accLqdrPerShare = 0;
+        accWFTMPerShare = 0;
 
         // to be set later
         oracle = msg.sender;
@@ -759,18 +746,18 @@ contract NeoPool is Ownable {
         oracle = _oracle;
     }
 
-    function setMasterChefPid(uint pid) {
+    function setMasterChefPid(uint pid) public onlyOwner {
         masterchef_pid = pid;
     }
 
     // get the current reward per sec
-    function getRewardPerSec() public view returns (uint) {
+    function getRewardPerSec() public view returns (uint, uint) {
         uint256 timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
-        return rewardSegments[timestamp];
+        return (wftmRewardSegments[timestamp], morphRewardSegments[timestamp]);
     }
 
     // UPDATED
-    function getRewardRates() public view returns (uint lqdrRewards, uint morphRewards) {
+    function getRewardRates() public view returns (uint wftmRewards, uint morphRewards) {
         for (uint j = 0; j < rewardUpdateTimestamps.length; j++) {
             uint256 multiplier = 0;
             // if we are at the end of the rewardUpdateTimestamps
@@ -792,7 +779,7 @@ contract NeoPool is Ownable {
 
                 // we are at the end
                 // UPDATED
-                lqdrRewards = lqdrRewards.add(multiplier.mul(lqdrRewardSegments[rewardUpdateTimestamps[j]]));
+                wftmRewards = wftmRewards.add(multiplier.mul(wftmRewardSegments[rewardUpdateTimestamps[j]]));
                 morphRewards = morphRewards.add(multiplier.mul(morphRewardSegments[rewardUpdateTimestamps[j]]));
                 break;
             }
@@ -808,18 +795,18 @@ contract NeoPool is Ownable {
                 multiplier = rewardUpdateTimestamps[j + 1] - lastRewardTimestamp;
 
             // UPDATED
-            lqdrRewards = lqdrRewards.add(multiplier.mul(lqdrRewardSegments[rewardUpdateTimestamps[j]]));
+            wftmRewards = wftmRewards.add(multiplier.mul(wftmRewardSegments[rewardUpdateTimestamps[j]]));
             morphRewards = morphRewards.add(multiplier.mul(morphRewardSegments[rewardUpdateTimestamps[j]]));
         }
     }
 
     function pendingMorph(address _user) external view returns (uint256) {
         UserInfo storage user = userInfo[_user];
-        uint mlqdrlpSupply = mlqdrlp.balanceOf(address(this));
+        uint mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this));
         
         uint _accMorphPerShare = accMorphPerShare;
 
-        if (block.timestamp > lastRewardTimestamp && pillsSupply != 0) {
+        if (block.timestamp > lastRewardTimestamp && mlqdrlpSupply != 0) {
             (,uint rewardPerSec) = getRewardRates();
 
             _accMorphPerShare = _accMorphPerShare.add(rewardPerSec.mul(1e12).div(mlqdrlpSupply));
@@ -831,20 +818,19 @@ contract NeoPool is Ownable {
     // constant neo
     function pendingReward(address _user) external view returns (uint256) {
         UserInfo storage user = userInfo[_user];
-        uint256 pillsSupply = pills.balanceOf(address(this));
 
-        uint mlqdrSupply = mlqdr.balanceOf(address(this));
-        uint mlqdrlpSupply = mlqdrlp.balanceOf(address(this)) / 2;
+        uint mlqdrSupply = IERC20(mlqdr).balanceOf(address(this));
+        uint mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this)) / 2;
         uint totalSupply = mlqdrSupply + mlqdrlpSupply;
 
-        uint _accLqdrPerShare = accLqdrPerShare;
+        uint _accWFTMPerShare = accWFTMPerShare;
         if (block.timestamp > lastRewardTimestamp && totalSupply != 0) {
             (uint rewardPerSec,) = getRewardRates();
 
-            _accLqdrPerShare = _accLqdrPerShare.add(rewardPerSec.mul(1e12).div(totalSupply));
+            _accWFTMPerShare = _accWFTMPerShare.add(rewardPerSec.mul(1e12).div(totalSupply));
         }
         uint userTotalAmount = user.amount + user.amountLP; // amountLP is already broken down
-        return totalAmount.mul(_accLqdrPerShare).div(1e12).sub(user.rewardDebt);
+        return userTotalAmount.mul(_accWFTMPerShare).div(1e12).sub(user.rewardDebt);
     }
 
     function updatePeriod(uint _period) public onlyOwner {
@@ -853,44 +839,45 @@ contract NeoPool is Ownable {
 
     // 3.4
     // returns the total amount of outstanding rewards from the current segment
-    function outstandingRewards() view returns (uint256 outstandingLqdr, uint256 outstandingMorph) {
+    function outstandingRewards() public view returns (uint256 outstandingWFTM, uint256 outstandingMorph) {
         // pC2
-        if(rewardUpdateTimestamps.length == 0) return 0;
+        if(rewardUpdateTimestamps.length == 0) return (0,0);
 
         uint segment0Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
         uint segment1Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1];
         if(segment1Timestamp >= block.timestamp) {
-            outstanding = 0;
+            outstandingWFTM = 0;
+            outstandingMorph = 0;
         } else {
             uint timeRemaining = segment1Timestamp - block.timestamp;
             uint morphRewardPerSec = morphRewardSegments[segment0Timestamp];
-            uint lqdrRewardPerSec = lqdrRewardSegments[segment0Timestamp];
+            uint wftmRewardPerSec = wftmRewardSegments[segment0Timestamp];
             outstandingMorph = timeRemaining * morphRewardPerSec;
-            outstandingLqdr = timeRemaining * lqdrRewardPerSec;
+            outstandingWFTM = timeRemaining * wftmRewardPerSec;
         }
     }
 
     // constant neo
-    function updateRewardPerSec(uint256 newLqdrAmount) public {
+    function updateRewardPerSec(uint256 newAmount) public {
         require(msg.sender == oracle || msg.sender == owner(), "Only the oracle or Neo himself can get through...");
         require(block.timestamp > lastUpdateTimestamp);
         lastUpdateTimestamp = block.timestamp;
 
-        uint256 oldMorphBalance = morph.balanceOf(address(this));
+        uint256 oldMorphBalance = IERC20(morph).balanceOf(address(this));
         IMasterChef(masterchef).deposit(0, masterchef_pid);
-        uint256 newMorphAmount = morph.balanceOf(address(this)) - oldMorphBalance;
+        uint256 newMorphAmount = IERC20(morph).balanceOf(address(this)) - oldMorphBalance;
 
-        uint256 lqdrBalance = lqdr.balanceOf(address(this));
-        uint256 morphBalance = morph.balanceOf(address(this));
-        if (lqdrBalance == 0 && morphBalance == 0) return;
+        uint256 wftmBalance = IERC20(wftm).balanceOf(address(this));
+        uint256 morphBalance = IERC20(morph).balanceOf(address(this));
+        if (wftmBalance == 0 && morphBalance == 0) return;
 
-        (uint outstandingLqdr, uint outstandingMorph) = outstandingRewards();
-        uint lqdrRewardSupply = newLqdrAmount.add(outstandingLqdr);
+        (uint outstandingWFTM, uint outstandingMorph) = outstandingRewards();
+        uint wftmRewardSupply = newAmount.add(outstandingWFTM);
         uint morphRewardSupply = newMorphAmount.add(outstandingMorph);
 
         // amount of seconds in a week + 1/3 day padding in case of network congestion
         // don't want to run out of that good good
-        uint256 lqdrRewardPerSec = lqdrRewardSupply.div(period);
+        uint256 wftmRewardPerSec = wftmRewardSupply.div(period);
         uint256 morphRewardPerSec = morphRewardSupply.div(period);
 
         // if it's not the first segment
@@ -909,11 +896,11 @@ contract NeoPool is Ownable {
 
         rewardUpdateTimestamps.push(block.timestamp + period);
         morphRewardSegments[block.timestamp] = morphRewardPerSec;
-        lqdrRewardSegments[block.timestamp] = lqdrRewardPerSec;
+        wftmRewardSegments[block.timestamp] = wftmRewardPerSec;
 
         // in case rewardPerSec doesnt update in time
         morphRewardSegments[block.timestamp + period] = 0;
-        lqdrRewardSegments[block.timestamp + period] = 0;
+        wftmRewardSegments[block.timestamp + period] = 0;
 
         updatePool();
     }
@@ -924,8 +911,8 @@ contract NeoPool is Ownable {
     function updatePool() public {
         if (block.timestamp <= lastRewardTimestamp) return;
         if (rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1] <= lastRewardTimestamp) return; // no more to give since last reward
-        uint256 mlqdrlpSupply = mlqdrlp.balanceOf(address(this));
-        uint256 mlqdrSupply = mlqdr.balanceOf(address(this));
+        uint256 mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this));
+        uint256 mlqdrSupply = IERC20(mlqdr).balanceOf(address(this));
 
         if (mlqdrlpSupply == 0 && mlqdrSupply == 0) {
             lastRewardTimestamp = block.timestamp;
@@ -933,8 +920,8 @@ contract NeoPool is Ownable {
         }
 
         uint totalSupply = mlqdrSupply + getStakedValue(mlqdrlpSupply);
-        (uint lqdrRewardPerSec, uint morphRewardPerSec) = getRewardRates();
-        accLqdrPerShare = accLqdrPerShare.add(lqdrRewardPerSec.mul(1e12).div(totalSupply))
+        (uint wftmRewardPerSec, uint morphRewardPerSec) = getRewardRates();
+        accWFTMPerShare = accWFTMPerShare.add(wftmRewardPerSec.mul(1e12).div(totalSupply));
         accMorphPerShare = accMorphPerShare.add(morphRewardPerSec.mul(1e12).div(mlqdrlpSupply));
         lastRewardTimestamp = block.timestamp;
     }
@@ -944,8 +931,8 @@ contract NeoPool is Ownable {
     function getStakedValue(uint amount) public view returns (uint) {
         if(amount == 0) return 0;
 
-        (uint reserve0 ,uint reserve1,) = IPair(poolContract).getReserves();
-        uint totalSupply = IPair(poolContract).getReserves();
+        (uint reserve0 ,uint reserve1,) = IPair(mlqdrlp).getReserves();
+        uint totalSupply = IPair(mlqdrlp).totalSupply();
         uint value = ((reserve0 + reserve1) * amount) / totalSupply;
 
         // 50% because mlqdr = lqdr
@@ -963,9 +950,9 @@ contract NeoPool is Ownable {
             // check to see if there is pending lqdr reward (mLQDR staked)
             if (user.amount > 0 || user.amountLP > 0) {
                 uint totalAmount = user.amount + getStakedValue(user.amountLP);
-                uint256 pending = totalAmount.mul(accLqdrPerShare).div(1e12).sub(user.rewardDebt);
+                uint256 pending = totalAmount.mul(accWFTMPerShare).div(1e12).sub(user.rewardDebt);
                 if(pending > 0) {
-                    lqdr.safeTransfer(address(msg.sender), pending);
+                    IERC20(wftm).safeTransfer(address(msg.sender), pending);
                 }
             }
 
@@ -973,24 +960,24 @@ contract NeoPool is Ownable {
             if (user.amountLP > 0) {
                 uint256 pendingMorph = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
                 if(pendingMorph > 0) {
-                    morph.safeTransfer(address(msg.sender), pendingMorph);
+                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorph);
                     user.rewardDebtMorph = user.amountLP.mul(accMorphPerShare).div(1e12);
                 }
             }
 
             if(_amount > 0) {
-                pills.safeTransferFrom(address(msg.sender), address(this), _amount);
+                IERC20(mlqdr).safeTransferFrom(address(msg.sender), address(this), _amount);
                 user.amount = user.amount.add(_amount);
             }
 
             uint totalAmount = user.amount + getStakedValue(user.amountLP);
-            user.rewardDebt = totalAmount.mul(accLqdrPerShare).div(1e12);
+            user.rewardDebt = totalAmount.mul(accWFTMPerShare).div(1e12);
         } else {
             if (user.amount > 0 || user.amountLP > 0) {
                 uint totalAmount = user.amount + getStakedValue(user.amountLP);
-                uint256 pending = totalAmount.mul(accLqdrPerShare).div(1e12).sub(user.rewardDebt);
+                uint256 pending = totalAmount.mul(accWFTMPerShare).div(1e12).sub(user.rewardDebt);
                 if(pending > 0) {
-                    lqdr.safeTransfer(address(msg.sender), pending);
+                    IERC20(wftm).safeTransfer(address(msg.sender), pending);
                 }
             }
 
@@ -998,17 +985,17 @@ contract NeoPool is Ownable {
             if (user.amountLP > 0) {
                 uint256 pendingMorph = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
                 if(pendingMorph > 0) {
-                    morph.safeTransfer(address(msg.sender), pendingMorph);
+                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorph);
                 }
             }
 
             if(_amount > 0) {
-                mlqdrlp.safeTransferFrom(address(msg.sender), address(this), _amount);
+                IERC20(mlqdrlp).safeTransferFrom(address(msg.sender), address(this), _amount);
                 user.amountLP = user.amountLP.add(_amount);
             }
 
             uint totalAmount = user.amount + getStakedValue(user.amountLP);
-            user.rewardDebt = totalAmount.mul(accLqdrPerShare).div(1e12);
+            user.rewardDebt = totalAmount.mul(accWFTMPerShare).div(1e12);
             user.rewardDebtMorph = user.amountLP.mul(accMorphPerShare).div(1e12);
         }
 
@@ -1016,43 +1003,45 @@ contract NeoPool is Ownable {
     }
 
     // Withdraw SYRUP tokens from STAKING.
-    function withdraw(address token, uint256 _amount) public {
+    function withdrawMLqdr(address token, uint256 _amount) public {
         UserInfo storage user = userInfo[msg.sender];
         require(user.amount >= _amount, "withdraw: not good");
 
         updatePool();
-        uint256 pending = user.amount.mul(accMorphPerShare).div(1e12).sub(user.rewardDebt);
+        uint256 pending = user.amount.mul(accWFTMPerShare).div(1e12).sub(user.rewardDebt);
         if(pending > 0) {
-            lqdr.safeTransfer(address(msg.sender), pending);
+            IERC20(wftm).safeTransfer(address(msg.sender), pending);
         }
         if(_amount > 0) {
             user.amount = user.amount.sub(_amount);
-            pills.safeTransfer(address(msg.sender), _amount);
+            IERC20(mlqdr).safeTransfer(address(msg.sender), _amount);
         }
-        user.rewardDebt = user.amount.mul(accMorphPerShare).div(1e12);
+
+        uint totalAmount = user.amount + getStakedValue(user.amountLP);
+        user.rewardDebt = totalAmount.mul(accWFTMPerShare).div(1e12);
 
         emit Withdraw(msg.sender, token, _amount);
     }
 
     // Withdraw without caring about rewards. EMERGENCY ONLY.
-    function emergencyWithdraw() public {
-        UserInfo storage user = userInfo[msg.sender];
-        pills.safeTransfer(address(msg.sender), user.amount);
-        user.amount = 0;
-        user.rewardDebt = 0;
-        emit EmergencyWithdraw(msg.sender, user.amount);
-    }
+    // function emergencyWithdraw() public {
+    //     UserInfo storage user = userInfo[msg.sender];
+    //     pills.safeTransfer(address(msg.sender), user.amount);
+    //     user.amount = 0;
+    //     user.rewardDebt = 0;
+    //     emit EmergencyWithdraw(msg.sender, user.amount);
+    // }
 
     // Withdraw reward. EMERGENCY ONLY.
     function emergencyRewardWithdrawLqdr(uint256 _amount) public onlyOwner {
-        require(_amount < lqdr.balanceOf(address(this)), 'not enough token');
-        lqdr.safeTransfer(address(msg.sender), _amount);
+        require(_amount < IERC20(wftm).balanceOf(address(this)), 'not enough token');
+        IERC20(wftm).safeTransfer(address(msg.sender), _amount);
     }
 
     // Withdraw reward. EMERGENCY ONLY.
     function emergencyRewardWithdrawMorph(uint256 _amount) public onlyOwner {
-        require(_amount < morph.balanceOf(address(this)), 'not enough token');
-        morph.safeTransfer(address(msg.sender), _amount);
+        require(_amount < IERC20(morph).balanceOf(address(this)), 'not enough token');
+        IERC20(morph).safeTransfer(address(msg.sender), _amount);
     }
 
 }
