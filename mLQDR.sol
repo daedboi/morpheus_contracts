@@ -1054,8 +1054,8 @@ pragma solidity 0.8.9;
 library $
 {
 	// mainnet
-	address constant LQDR = 0x3B382Cc4542eec36Ec4A38Fd227F7cD88e888195;
-	address constant XLQDR = 0xD6BaB06838f3cAd8078d54E307eec69F852Ff3C0;
+    address constant LQDR = 0x10b620b2dbAC4Faa7D7FFD71Da486f5D44cd86f9;
+    address constant XLQDR = 0x3Ae658656d1C526144db371FaEf2Fff7170654eE;
 }
 
 
