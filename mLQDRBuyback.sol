@@ -592,29 +592,29 @@ pragma solidity 0.8.9;
 
 library $
 {
-	// ftmmain
-	address constant LQDR = 0x10b620b2dbAC4Faa7D7FFD71Da486f5D44cd86f9;
-	address constant XLQDR = 0x3Ae658656d1C526144db371FaEf2Fff7170654eE;
+    // ftmmain
+    address constant LQDR = 0x10b620b2dbAC4Faa7D7FFD71Da486f5D44cd86f9;
+    address constant XLQDR = 0x3Ae658656d1C526144db371FaEf2Fff7170654eE;
 
-	address constant WFTM = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
-	address constant BOO = 0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE;
-	address constant SPIRIT = 0x5Cc61A78F164885776AA610fb0FE1257df78E59B;
-	address constant LINSPIRIT = 0xc5713B6a0F26bf0fdC1c52B90cd184D950be515C;
-	address constant SPELL = 0x468003B688943977e6130F4F68F23aad939a1040;
-	address constant BEETS = 0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e;
-	address constant DEUS = 0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44;
-	address constant HND = 0x10010078a54396F62c96dF8532dc2B4847d47ED3;
-	address constant LIHND = 0xA147268f35Db4Ae3932eabe42AF16C36A8B89690;
+    address constant WFTM = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
+    address constant BOO = 0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE;
+    address constant SPIRIT = 0x5Cc61A78F164885776AA610fb0FE1257df78E59B;
+    address constant LINSPIRIT = 0xc5713B6a0F26bf0fdC1c52B90cd184D950be515C;
+    address constant SPELL = 0x468003B688943977e6130F4F68F23aad939a1040;
+    address constant BEETS = 0xF24Bcf4d1e507740041C9cFd2DddB29585aDCe1e;
+    address constant DEUS = 0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44;
+    address constant HND = 0x10010078a54396F62c96dF8532dc2B4847d47ED3;
+    address constant LIHND = 0xA147268f35Db4Ae3932eabe42AF16C36A8B89690;
 
-	address constant SPIRITSWAP_UNISWAP_V2_ROUTER = 0x16327E3FbDaCA3bcF7E38F5Af2599D2DDc33aE52;
-	address constant SPOOKYSWAP_UNISWAP_V2_ROUTER = 0xF491e7B69E4244ad4002BC14e878a34207E38c29;
+    address constant SPIRITSWAP_UNISWAP_V2_ROUTER = 0x16327E3FbDaCA3bcF7E38F5Af2599D2DDc33aE52;
+    address constant SPOOKYSWAP_UNISWAP_V2_ROUTER = 0xF491e7B69E4244ad4002BC14e878a34207E38c29;
 
-	address constant BEETHOVEN_BALANCER_V2_VAULT = 0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce;
-	bytes32 constant BEETHOVEN_BALANCER_V2_FTM_BEETS_WP2T = 0xcde5a11a4acb4ee4c805352cec57e236bdbc3837000200000000000000000019;
-	bytes32 constant BEETHOVEN_BALANCER_V2_SPIRIT_LINSPIRIT_SP = 0x30a92a4eeca857445f41e4bb836e64d66920f1c0000200000000000000000071;
-	bytes32 constant BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP = 0xeadcfa1f34308b144e96fcd7a07145e027a8467d000000000000000000000331;
-	bytes32 constant BEETHOVEN_BALANCER_V2_HND_LIHND_SP = 0x8f6a658056378558ff88265f7c9444a0fb4db4be0002000000000000000002b8;
-	bytes32 constant BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP = 0xd57cda2caebb9b64bb88905c4de0f0da217a77d7000100000000000000000073;
+    address constant BEETHOVEN_BALANCER_V2_VAULT = 0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce;
+    bytes32 constant BEETHOVEN_BALANCER_V2_FTM_BEETS_WP2T = 0xcde5a11a4acb4ee4c805352cec57e236bdbc3837000200000000000000000019;
+    bytes32 constant BEETHOVEN_BALANCER_V2_SPIRIT_LINSPIRIT_SP = 0x30a92a4eeca857445f41e4bb836e64d66920f1c0000200000000000000000071;
+    bytes32 constant BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP = 0xeadcfa1f34308b144e96fcd7a07145e027a8467d000000000000000000000331;
+    bytes32 constant BEETHOVEN_BALANCER_V2_HND_LIHND_SP = 0x8f6a658056378558ff88265f7c9444a0fb4db4be0002000000000000000002b8;
+    bytes32 constant BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP = 0xd57cda2caebb9b64bb88905c4de0f0da217a77d7000100000000000000000073;
 }
 
 
@@ -625,30 +625,30 @@ pragma solidity 0.8.9;
 
 interface IVault
 {
-	enum SwapKind { GIVEN_IN, GIVEN_OUT }
+    enum SwapKind { GIVEN_IN, GIVEN_OUT }
 
-	struct SingleSwap {
-		bytes32 poolId;
-		SwapKind kind;
-		address assetIn;
-		address assetOut;
-		uint256 amount;
-		bytes userData;
-	}
+    struct SingleSwap {
+        bytes32 poolId;
+        SwapKind kind;
+        address assetIn;
+        address assetOut;
+        uint256 amount;
+        bytes userData;
+    }
 
-	struct FundManagement {
-		address sender;
-		bool fromInternalBalance;
-		address payable recipient;
-		bool toInternalBalance;
-	}
+    struct FundManagement {
+        address sender;
+        bool fromInternalBalance;
+        address payable recipient;
+        bool toInternalBalance;
+    }
 
-	function swap(SingleSwap memory _singleSwap, FundManagement memory _funds, uint256 _limit, uint256 _deadline) external payable returns (uint256 _amountCalculated);
+    function swap(SingleSwap memory _singleSwap, FundManagement memory _funds, uint256 _limit, uint256 _deadline) external payable returns (uint256 _amountCalculated);
 }
 
 interface IRateProvider
 {
-	function getRate() external view returns (uint256 _rate);
+    function getRate() external view returns (uint256 _rate);
 }
 
 
@@ -659,17 +659,17 @@ pragma solidity 0.8.9;
 
 interface Factory
 {
-	function getPair(address _tokenA, address _tokenB) external view returns (address _pair);
+    function getPair(address _tokenA, address _tokenB) external view returns (address _pair);
 }
 
 interface Router02
 {
-	function factory() external view returns (address _factory);
+    function factory() external view returns (address _factory);
 /*
-	function getAmountsOut(uint256 _amountIn, address[] calldata _path) external view returns (uint[] memory _amounts);
+    function getAmountsOut(uint256 _amountIn, address[] calldata _path) external view returns (uint[] memory _amounts);
 */
 
-	function swapExactTokensForTokens(uint256 _amountIn, uint256 _amountOutMin, address[] calldata _path, address _to, uint256 _deadline) external returns (uint256[] memory _amounts);
+    function swapExactTokensForTokens(uint256 _amountIn, uint256 _amountOutMin, address[] calldata _path, address _to, uint256 _deadline) external returns (uint256[] memory _amounts);
 }
 
 
@@ -680,10 +680,10 @@ pragma solidity 0.8.9;
 
 interface IOracle
 {
-	function consultCurrentPrice(address _pair, address _token, uint256 _amountIn) external view returns (uint256 _amountOut);
-	function consultAveragePrice(address _pair, address _token, uint256 _amountIn) external view returns (uint256 _amountOut);
+    function consultCurrentPrice(address _pair, address _token, uint256 _amountIn) external view returns (uint256 _amountOut);
+    function consultAveragePrice(address _pair, address _token, uint256 _amountIn) external view returns (uint256 _amountOut);
 
-	function updateAveragePrice(address _pair) external;
+    function updateAveragePrice(address _pair) external;
 }
 
 
@@ -1082,31 +1082,31 @@ pragma solidity 0.8.9;
 
 interface MasterChefV2
 {
-	function LQDR() external view returns (address _LQDR);
-	function pendingLqdr(uint256 _pid, address _user) external view returns (uint256 _pending);
+    function LQDR() external view returns (address _LQDR);
+    function pendingLqdr(uint256 _pid, address _user) external view returns (uint256 _pending);
 
-	function deposit(uint256 _pid, uint256 _amount, address _to) external;
-	function withdraw(uint256 _pid, uint256 _amount, address _to) external;
-	function harvest(uint256 _pid, address _to) external;
-	function withdrawAndHarvest(uint256 _pid, uint256 _amount, address _to) external;
-	function emergencyWithdraw(uint256 _pid, address _to) external;
+    function deposit(uint256 _pid, uint256 _amount, address _to) external;
+    function withdraw(uint256 _pid, uint256 _amount, address _to) external;
+    function harvest(uint256 _pid, address _to) external;
+    function withdrawAndHarvest(uint256 _pid, uint256 _amount, address _to) external;
+    function emergencyWithdraw(uint256 _pid, address _to) external;
 }
 
 interface VoteEscrow
 {
-	function locked(address _account) external view returns (int128 _amount, uint256 _unlockTime);
+    function locked(address _account) external view returns (int128 _amount, uint256 _unlockTime);
 
-	function create_lock(uint256 _amount, uint256 _unlockTime) external;
-	function deposit_for(address _account, uint256 _amount) external;
-	function increase_unlock_time(uint256 _unlockTime) external;
-	function withdraw() external;
+    function create_lock(uint256 _amount, uint256 _unlockTime) external;
+    function deposit_for(address _account, uint256 _amount) external;
+    function increase_unlock_time(uint256 _unlockTime) external;
+    function withdraw() external;
 }
 
 interface FeeDistribution
 {
-	function tokens(uint256 _index) external view returns (address _token);
+    function tokens(uint256 _index) external view returns (address _token);
 
-	function claim() external returns (uint256[7] memory _amounts);
+    function claim() external returns (uint256[7] memory _amounts);
 }
 
 
@@ -1117,45 +1117,45 @@ pragma solidity 0.8.9;
 
 abstract contract DelayedActionGuard
 {
-	uint256 private constant DEFAULT_WAIT_INTERVAL = 1 days;
-	uint256 private constant DEFAULT_OPEN_INTERVAL = 1 days;
+    uint256 private constant DEFAULT_WAIT_INTERVAL = 1 days;
+    uint256 private constant DEFAULT_OPEN_INTERVAL = 1 days;
 
-	struct DelayedAction {
-		uint256 release;
-		uint256 expiration;
-	}
+    struct DelayedAction {
+        uint256 release;
+        uint256 expiration;
+    }
 
-	mapping (address => mapping (bytes32 => DelayedAction)) private actions_;
+    mapping (address => mapping (bytes32 => DelayedAction)) private actions_;
 
-	modifier delayed()
-	{
-		bytes32 _actionId = keccak256(msg.data);
-		DelayedAction storage _action = actions_[msg.sender][_actionId];
-		require(_action.release <= block.timestamp && block.timestamp < _action.expiration, "invalid action");
-		delete actions_[msg.sender][_actionId];
-		emit ExecuteDelayedAction(msg.sender, _actionId);
-		_;
-	}
+    modifier delayed()
+    {
+        bytes32 _actionId = keccak256(msg.data);
+        DelayedAction storage _action = actions_[msg.sender][_actionId];
+        require(_action.release <= block.timestamp && block.timestamp < _action.expiration, "invalid action");
+        delete actions_[msg.sender][_actionId];
+        emit ExecuteDelayedAction(msg.sender, _actionId);
+        _;
+    }
 
-	function announceDelayedAction(bytes calldata _data) external
-	{
-		bytes4 _selector = bytes4(_data);
-		bytes32 _actionId = keccak256(_data);
-		(uint256 _wait, uint256 _open) = _delayedActionIntervals(_selector);
-		uint256 _release = block.timestamp + _wait;
-		uint256 _expiration = _release + _open;
-		actions_[msg.sender][_actionId] = DelayedAction({ release: _release, expiration: _expiration });
-		emit AnnounceDelayedAction(msg.sender, _actionId, _selector, _data, _release, _expiration);
-	}
+    function announceDelayedAction(bytes calldata _data) external
+    {
+        bytes4 _selector = bytes4(_data);
+        bytes32 _actionId = keccak256(_data);
+        (uint256 _wait, uint256 _open) = _delayedActionIntervals(_selector);
+        uint256 _release = block.timestamp + _wait;
+        uint256 _expiration = _release + _open;
+        actions_[msg.sender][_actionId] = DelayedAction({ release: _release, expiration: _expiration });
+        emit AnnounceDelayedAction(msg.sender, _actionId, _selector, _data, _release, _expiration);
+    }
 
-	function _delayedActionIntervals(bytes4 _selector) internal pure virtual returns (uint256 _wait, uint256 _open)
-	{
-		_selector;
-		return (DEFAULT_WAIT_INTERVAL, DEFAULT_OPEN_INTERVAL);
-	}
+    function _delayedActionIntervals(bytes4 _selector) internal pure virtual returns (uint256 _wait, uint256 _open)
+    {
+        _selector;
+        return (DEFAULT_WAIT_INTERVAL, DEFAULT_OPEN_INTERVAL);
+    }
 
-	event AnnounceDelayedAction(address indexed _sender, bytes32 indexed _actionId, bytes4 indexed _selector, bytes _data, uint256 _release, uint256 _expiration);
-	event ExecuteDelayedAction(address indexed _sender, bytes32 indexed _actionId);
+    event AnnounceDelayedAction(address indexed _sender, bytes32 indexed _actionId, bytes4 indexed _selector, bytes _data, uint256 _release, uint256 _expiration);
+    event ExecuteDelayedAction(address indexed _sender, bytes32 indexed _actionId);
 }
 
 
@@ -1170,124 +1170,124 @@ pragma solidity 0.8.9;
 
 contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionGuard
 {
-	using SafeERC20 for IERC20;
+    using SafeERC20 for IERC20;
 
-	uint256 constant WEEK = 7 days;
-	uint256 constant MAXTIME = 730 days; // 2 years
+    uint256 constant WEEK = 7 days;
+    uint256 constant MAXTIME = 730 days; // 2 years
 
-	uint256 private unlockTime_;
+    uint256 private unlockTime_;
 
-	address public extension;
+    address public extension;
 
-	bool public emergencyMode;
+    bool public emergencyMode;
 
-	modifier onlyExtension()
-	{
-		require(msg.sender == extension, "access denied");
-		_;
-	}
+    modifier onlyExtension()
+    {
+        require(msg.sender == extension, "access denied");
+        _;
+    }
 
-	modifier inEmergency()
-	{
-		require(emergencyMode, "not available");
-		_;
-	}
+    modifier inEmergency()
+    {
+        require(emergencyMode, "not available");
+        _;
+    }
 
-	modifier nonEmergency()
-	{
-		require(!emergencyMode, "not available");
-		_;
-	}
+    modifier nonEmergency()
+    {
+        require(!emergencyMode, "not available");
+        _;
+    }
 
-	constructor(string memory _name, string memory _symbol)
-		ERC20(_name, _symbol)
-	{
-		uint256 _unlockTime = ((block.timestamp + MAXTIME) / WEEK) * WEEK;
-		IERC20($.LQDR).safeApprove($.XLQDR, 1);
-		VoteEscrow($.XLQDR).create_lock(1, _unlockTime);
-		unlockTime_ = _unlockTime;
-		_mint(address(1), 1);
-	}
+    constructor(string memory _name, string memory _symbol)
+        ERC20(_name, _symbol)
+    {
+        uint256 _unlockTime = ((block.timestamp + MAXTIME) / WEEK) * WEEK;
+        IERC20($.LQDR).safeApprove($.XLQDR, 1);
+        VoteEscrow($.XLQDR).create_lock(1, _unlockTime);
+        unlockTime_ = _unlockTime;
+        _mint(address(1), 1);
+    }
 
-	function totalReserve() public view returns (uint256 _amount)
-	{
-		if (emergencyMode) {
-			return IERC20($.LQDR).balanceOf(address(this));
-		} else {
-			(int128 _value,) = VoteEscrow($.XLQDR).locked(address(this));
-			return uint256(uint128(_value));
-		}
-	}
+    function totalReserve() public view returns (uint256 _amount)
+    {
+        if (emergencyMode) {
+            return IERC20($.LQDR).balanceOf(address(this));
+        } else {
+            (int128 _value,) = VoteEscrow($.XLQDR).locked(address(this));
+            return uint256(uint128(_value));
+        }
+    }
 
-	function calcSharesFromAmount(uint256 _amount) public view returns (uint256 _shares)
-	{
-		return _amount * totalSupply() / totalReserve();
-	}
+    function calcSharesFromAmount(uint256 _amount) public view returns (uint256 _shares)
+    {
+        return _amount * totalSupply() / totalReserve();
+    }
 
-	function calcAmountFromShares(uint256 _shares) public view returns (uint256 _amount)
-	{
-		return _shares * totalReserve() / totalSupply();
-	}
+    function calcAmountFromShares(uint256 _shares) public view returns (uint256 _amount)
+    {
+        return _shares * totalReserve() / totalSupply();
+    }
 
-	function deposit(uint256 _amount, uint256 _minShares) external nonReentrant nonEmergency
-	{
-		uint256 _shares = _amount * totalSupply() / totalReserve();
-		require(_shares >= _minShares, "high slippage");
-		_mint(msg.sender, _shares);
-		IERC20($.LQDR).safeTransferFrom(msg.sender, address(this), _amount);
-		IERC20($.LQDR).safeApprove($.XLQDR, _amount);
-		VoteEscrow($.XLQDR).deposit_for(address(this), _amount);
-	}
+    function deposit(uint256 _amount, uint256 _minShares) external nonReentrant nonEmergency
+    {
+        uint256 _shares = _amount * totalSupply() / totalReserve();
+        require(_shares >= _minShares, "high slippage");
+        _mint(msg.sender, _shares);
+        IERC20($.LQDR).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20($.LQDR).safeApprove($.XLQDR, _amount);
+        VoteEscrow($.XLQDR).deposit_for(address(this), _amount);
+    }
 
-	function withdraw(uint256 _shares, uint256 _minAmount) external nonReentrant inEmergency
-	{
-		uint256 _amount = _shares * totalReserve() / totalSupply();
-		require(_amount >= _minAmount, "high slippage");
-		_burn(msg.sender, _shares);
-		IERC20($.LQDR).safeTransfer(msg.sender, _amount);
-	}
+    function withdraw(uint256 _shares, uint256 _minAmount) external nonReentrant inEmergency
+    {
+        uint256 _amount = _shares * totalReserve() / totalSupply();
+        require(_amount >= _minAmount, "high slippage");
+        _burn(msg.sender, _shares);
+        IERC20($.LQDR).safeTransfer(msg.sender, _amount);
+    }
 
-	function burn(uint256 _amount) external nonReentrant
-	{
-		_burn(msg.sender, _amount);
-	}
+    function burn(uint256 _amount) external nonReentrant
+    {
+        _burn(msg.sender, _amount);
+    }
 
-	function _call(address _target, bytes calldata _calldata) external payable onlyExtension returns (bool _success, bytes memory _resultdata)
-	{
-		require(_target != $.XLQDR, "forbidden target");
-		return _target.call{value: msg.value}(_calldata);
-	}
+    function _call(address _target, bytes calldata _calldata) external payable onlyExtension returns (bool _success, bytes memory _resultdata)
+    {
+        require(_target != $.XLQDR, "forbidden target");
+        return _target.call{value: msg.value}(_calldata);
+    }
 
-	function enterEmergencyMode() external onlyOwner nonEmergency
-	{
-		require(block.timestamp >= unlockTime_, "not available");
-		emergencyMode = true;
-		VoteEscrow($.XLQDR).withdraw();
-		emit EmergencyDeclared();
-	}
+    function enterEmergencyMode() external onlyOwner nonEmergency
+    {
+        require(block.timestamp >= unlockTime_, "not available");
+        emergencyMode = true;
+        VoteEscrow($.XLQDR).withdraw();
+        emit EmergencyDeclared();
+    }
 
-	function setExtension(address _newExtension) external onlyOwner delayed
-	{
-		address _oldExtension = extension;
-		extension = _newExtension;
-		emit UpdateExtension(_oldExtension, _newExtension);
-	}
+    function setExtension(address _newExtension) external onlyOwner delayed
+    {
+        address _oldExtension = extension;
+        extension = _newExtension;
+        emit UpdateExtension(_oldExtension, _newExtension);
+    }
 
-	function _beforeTokenTransfer(address _from, address _to, uint256 _amount) internal virtual override
-	{
-		if (emergencyMode) return;
-		uint256 _unlockTime = ((block.timestamp + MAXTIME) / WEEK) * WEEK;
-		if (_unlockTime > unlockTime_) {
-			try VoteEscrow($.XLQDR).increase_unlock_time(_unlockTime) {
-				unlockTime_ = _unlockTime;
-			} catch (bytes memory _data) {
-				_from; _to; _amount; _data;
-			}
-		}
-	}
+    function _beforeTokenTransfer(address _from, address _to, uint256 _amount) internal virtual override
+    {
+        if (emergencyMode) return;
+        uint256 _unlockTime = ((block.timestamp + MAXTIME) / WEEK) * WEEK;
+        if (_unlockTime > unlockTime_) {
+            try VoteEscrow($.XLQDR).increase_unlock_time(_unlockTime) {
+                unlockTime_ = _unlockTime;
+            } catch (bytes memory _data) {
+                _from; _to; _amount; _data;
+            }
+        }
+    }
 
-	event EmergencyDeclared();
-	event UpdateExtension(address _oldExtension, address _newExtension);
+    event EmergencyDeclared();
+    event UpdateExtension(address _oldExtension, address _newExtension);
 }
 
 
@@ -1297,7 +1297,7 @@ contract PerpetualEscrowToken is ERC20, Ownable, ReentrancyGuard, DelayedActionG
 pragma solidity 0.8.9;
 
 contract ConstantNeo {
-    function updateRewardPerSec(uint) external {}
+    function updateRewardPerSec(uint256) public {}
 }
 
 
@@ -1305,56 +1305,55 @@ contract ConstantNeo {
 
 contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedActionGuard
 {
-	using SafeERC20 for IERC20;
+    using SafeERC20 for IERC20;
 
-	uint256 constant DEFAULT_MINIMAL_GULP_FACTOR = 80e16; // 80%
-	uint256 constant DEFAULT_BURNING_RATE = 80e16; // 80%
+    uint256 constant DEFAULT_MINIMAL_GULP_FACTOR = 80e16; // 80%
+    uint256 constant DEFAULT_BURNING_RATE = 80e16; // 80%
 
-	enum SwapType { NONE, UNISWAP_V2, BALANCER_V2 }
+    enum SwapType { NONE, UNISWAP_V2, BALANCER_V2 }
 
-	struct SwapInfo {
-		uint256 index;
-		uint256 minAmount;
-		SwapType swapType;
-		// UniswapV2
-		address router;
-		address[] path;
-		// BalancerV2
-		address vault;
-		IVault.SingleSwap swap;
-		IVault.FundManagement funds;
-	}
+    struct SwapInfo {
+        uint256 index;
+        uint256 minAmount;
+        SwapType swapType;
+        // UniswapV2
+        address router;
+        address[] path;
+        // BalancerV2
+        address vault;
+        IVault.SingleSwap swap;
+        IVault.FundManagement funds;
+    }
 
-	address public recipient;
+    address public recipient;
 
-	address public treasury;
+    address public treasury;
 
-	address public oracle;
-	uint256 public minimalGulpFactor = DEFAULT_MINIMAL_GULP_FACTOR;
+    address public oracle;
+    uint256 public minimalGulpFactor = DEFAULT_MINIMAL_GULP_FACTOR;
 
-	uint256 public burningRate = DEFAULT_BURNING_RATE;
+    uint256 public burningRate = DEFAULT_BURNING_RATE;
 
-	address[] public tokens;
-	mapping(address => SwapInfo) public swapInfo;
+    address[] public tokens;
+    mapping(address => SwapInfo) public swapInfo;
 
     /**
      * COLTRANE NOTES
      */
-	constructor(/*address _escrowToken,*/ address _masterchef, address _recipient, address _treasury, address _oracle)
-	{
-        masterchef = _masterchef;
-		// escrowToken = _escrowToken;
-		recipient = _recipient;
-		treasury = _treasury;
-		oracle = _oracle;
-		_addUniswapV2Token($.BOO, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
-		_addUniswapV2Token($.SPELL, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
-		_addBalancerV2Token($.BEETS, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_BEETS_WP2T, $.WFTM);
-		_addBalancerV2Token($.LINSPIRIT, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_SPIRIT_LINSPIRIT_SP, $.SPIRIT);
-		_addUniswapV2Token($.SPIRIT, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
-		_addUniswapV2Token($.DEUS, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
-		_addBalancerV2Token($.LIHND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_HND_LIHND_SP, $.HND);
-		_addBalancerV2Token($.HND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP, $.WFTM);
+    constructor(/*address _escrowToken,*/ address _recipient, address _treasury, address _oracle)
+    {
+        // escrowToken = _escrowToken;
+        recipient = _recipient;
+        treasury = _treasury;
+        oracle = _oracle;
+        _addUniswapV2Token($.BOO, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
+        _addUniswapV2Token($.SPELL, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
+        _addBalancerV2Token($.BEETS, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_BEETS_WP2T, $.WFTM);
+        _addBalancerV2Token($.LINSPIRIT, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_SPIRIT_LINSPIRIT_SP, $.SPIRIT);
+        _addUniswapV2Token($.SPIRIT, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
+        _addUniswapV2Token($.DEUS, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
+        _addBalancerV2Token($.LIHND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_HND_LIHND_SP, $.HND);
+        _addBalancerV2Token($.HND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP, $.WFTM);
 
         // convert LQDR to WFTM now
         _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, $.WFTM);
@@ -1362,263 +1361,263 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 
         // No longer swapping wFTM, as we convert all to wftm, then send to neo pool
         // _addUniswapV2Token($.WFTM, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.LQDR); 
-		// _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, _escrowToken);
-	}
+        // _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, _escrowToken);
+    }
 
-	modifier onlyEOA()
-	{
-		require(msg.sender == tx.origin, "access denied");
-		_;
-	}
+    modifier onlyEOA()
+    {
+        require(msg.sender == tx.origin, "access denied");
+        _;
+    }
 
-	function tokensCount() external view returns (uint256 _tokensCount)
-	{
-		return tokens.length;
-	}
+    function tokensCount() external view returns (uint256 _tokensCount)
+    {
+        return tokens.length;
+    }
 
-	function setRecipient(address _newRecipient) external onlyOwner delayed
-	{
-		require(_newRecipient != address(0), "invalid address");
-		address _oldRecipient = recipient;
-		recipient = _newRecipient;
-		emit UpdateRecipient(_oldRecipient, _newRecipient);
-	}
+    function setRecipient(address _newRecipient) external onlyOwner delayed
+    {
+        require(_newRecipient != address(0), "invalid address");
+        address _oldRecipient = recipient;
+        recipient = _newRecipient;
+        emit UpdateRecipient(_oldRecipient, _newRecipient);
+    }
 
-	function setTreasury(address _newTreasury) external onlyOwner //delayed
-	{
-		require(_newTreasury != address(0), "invalid address");
-		address _oldTreasury = treasury;
-		treasury = _newTreasury;
-		emit UpdateTreasury(_oldTreasury, _newTreasury);
-	}
+    function setTreasury(address _newTreasury) external onlyOwner //delayed
+    {
+        require(_newTreasury != address(0), "invalid address");
+        address _oldTreasury = treasury;
+        treasury = _newTreasury;
+        emit UpdateTreasury(_oldTreasury, _newTreasury);
+    }
 
-	function setOracle(address _newOracle) external onlyOwner delayed
-	{
-		require(_newOracle != address(0), "invalid address");
-		address _oldOracle = oracle;
-		oracle = _newOracle;
-		emit UpdateOracle(_oldOracle, _newOracle);
-	}
+    function setOracle(address _newOracle) external onlyOwner delayed
+    {
+        require(_newOracle != address(0), "invalid address");
+        address _oldOracle = oracle;
+        oracle = _newOracle;
+        emit UpdateOracle(_oldOracle, _newOracle);
+    }
 
-	function setMinimalGulpFactor(uint256 _newMinimalGulpFactor) external onlyOwner delayed
-	{
-		require(_newMinimalGulpFactor <= 1e18, "invalid factor");
-		uint256 _oldMinimalGulpFactor = minimalGulpFactor;
-		minimalGulpFactor = _newMinimalGulpFactor;
-		emit UpdateMinimalGulpFactor(_oldMinimalGulpFactor, _newMinimalGulpFactor);
-	}
+    function setMinimalGulpFactor(uint256 _newMinimalGulpFactor) external onlyOwner delayed
+    {
+        require(_newMinimalGulpFactor <= 1e18, "invalid factor");
+        uint256 _oldMinimalGulpFactor = minimalGulpFactor;
+        minimalGulpFactor = _newMinimalGulpFactor;
+        emit UpdateMinimalGulpFactor(_oldMinimalGulpFactor, _newMinimalGulpFactor);
+    }
 
-	function setBurningRate(uint256 _newBurningRate) external onlyOwner delayed
-	{
-		require(_newBurningRate <= 1e18, "invalid rate");
-		uint256 _oldBurningRate = burningRate;
-		burningRate = _newBurningRate;
-		emit UpdateBurningRate(_oldBurningRate, _newBurningRate);
-	}
+    function setBurningRate(uint256 _newBurningRate) external onlyOwner delayed
+    {
+        require(_newBurningRate <= 1e18, "invalid rate");
+        uint256 _oldBurningRate = burningRate;
+        burningRate = _newBurningRate;
+        emit UpdateBurningRate(_oldBurningRate, _newBurningRate);
+    }
 
-	function addUniswapV2Token(address _token, uint256 _minAmount, address _router, address _target) external onlyOwner delayed
-	{
-		_addUniswapV2Token(_token, _minAmount, _router, _target);
-	}
+    function addUniswapV2Token(address _token, uint256 _minAmount, address _router, address _target) external onlyOwner delayed
+    {
+        _addUniswapV2Token(_token, _minAmount, _router, _target);
+    }
 
-	function addBalancerV2Token(address _token, uint256 _minAmount, address _vault, bytes32 _poolId, address _target) external onlyOwner delayed
-	{
-		_addBalancerV2Token(_token, _minAmount, _vault, _poolId, _target);
-	}
+    function addBalancerV2Token(address _token, uint256 _minAmount, address _vault, bytes32 _poolId, address _target) external onlyOwner delayed
+    {
+        _addBalancerV2Token(_token, _minAmount, _vault, _poolId, _target);
+    }
 
-	function removeToken(address _token) external onlyOwner delayed
-	{
-		_removeToken(_token);
-	}
+    function removeToken(address _token) external onlyOwner delayed
+    {
+        _removeToken(_token);
+    }
 
-	function updateTokenParameters(address _token, uint256 _minAmount, address _routerOrVault, bytes32 _ignoredOrPoolId) external onlyOwner delayed
-	{
-		_updateTokenParameters(_token, _minAmount, _routerOrVault, _ignoredOrPoolId);
-	}
+    function updateTokenParameters(address _token, uint256 _minAmount, address _routerOrVault, bytes32 _ignoredOrPoolId) external onlyOwner delayed
+    {
+        _updateTokenParameters(_token, _minAmount, _routerOrVault, _ignoredOrPoolId);
+    }
 
-	function _addUniswapV2Token(address _token, uint256 _minAmount, address _router, address _target) internal
-	{
-		SwapInfo storage _swapInfo = swapInfo[_token];
-		require(_swapInfo.swapType == SwapType.NONE, "duplicate token");
-		uint256 _index = tokens.length;
-		tokens.push(_token);
-		_swapInfo.index = _index;
-		_swapInfo.minAmount = _minAmount;
-		_swapInfo.swapType = SwapType.UNISWAP_V2;
-		_swapInfo.router = _router;
-		_swapInfo.path = new address[](2);
-		_swapInfo.path[0] = _token;
-		_swapInfo.path[1] = _target;
-	}
+    function _addUniswapV2Token(address _token, uint256 _minAmount, address _router, address _target) internal
+    {
+        SwapInfo storage _swapInfo = swapInfo[_token];
+        require(_swapInfo.swapType == SwapType.NONE, "duplicate token");
+        uint256 _index = tokens.length;
+        tokens.push(_token);
+        _swapInfo.index = _index;
+        _swapInfo.minAmount = _minAmount;
+        _swapInfo.swapType = SwapType.UNISWAP_V2;
+        _swapInfo.router = _router;
+        _swapInfo.path = new address[](2);
+        _swapInfo.path[0] = _token;
+        _swapInfo.path[1] = _target;
+    }
 
-	function _addBalancerV2Token(address _token, uint256 _minAmount, address _vault, bytes32 _poolId, address _target) internal
-	{
-		SwapInfo storage _swapInfo = swapInfo[_token];
-		require(_swapInfo.swapType == SwapType.NONE, "duplicate token");
-		uint256 _index = tokens.length;
-		tokens.push(_token);
-		_swapInfo.index = _index;
-		_swapInfo.minAmount = _minAmount;
-		_swapInfo.swapType = SwapType.BALANCER_V2;
-		_swapInfo.vault = _vault;
-		_swapInfo.swap.poolId = _poolId;
-		_swapInfo.swap.kind = IVault.SwapKind.GIVEN_IN;
-		_swapInfo.swap.assetIn = _token;
-		_swapInfo.swap.assetOut = _target;
-		_swapInfo.swap.amount = 0;
-		_swapInfo.swap.userData = new bytes(0);
-		_swapInfo.funds.sender = address(this);
-		_swapInfo.funds.fromInternalBalance = false;
-		_swapInfo.funds.recipient = payable(address(this));
-		_swapInfo.funds.toInternalBalance = false;
-	}
+    function _addBalancerV2Token(address _token, uint256 _minAmount, address _vault, bytes32 _poolId, address _target) internal
+    {
+        SwapInfo storage _swapInfo = swapInfo[_token];
+        require(_swapInfo.swapType == SwapType.NONE, "duplicate token");
+        uint256 _index = tokens.length;
+        tokens.push(_token);
+        _swapInfo.index = _index;
+        _swapInfo.minAmount = _minAmount;
+        _swapInfo.swapType = SwapType.BALANCER_V2;
+        _swapInfo.vault = _vault;
+        _swapInfo.swap.poolId = _poolId;
+        _swapInfo.swap.kind = IVault.SwapKind.GIVEN_IN;
+        _swapInfo.swap.assetIn = _token;
+        _swapInfo.swap.assetOut = _target;
+        _swapInfo.swap.amount = 0;
+        _swapInfo.swap.userData = new bytes(0);
+        _swapInfo.funds.sender = address(this);
+        _swapInfo.funds.fromInternalBalance = false;
+        _swapInfo.funds.recipient = payable(address(this));
+        _swapInfo.funds.toInternalBalance = false;
+    }
 
-	function _removeToken(address _token) internal
-	{
-		SwapInfo storage _swapInfo = swapInfo[_token];
-		require(_swapInfo.swapType != SwapType.NONE, "unknown token");
-		uint256 _index = _swapInfo.index;
-		_swapInfo.index = 0;
-		_swapInfo.minAmount = 0;
-		_swapInfo.swapType = SwapType.NONE;
-		_swapInfo.router = address(0);
-		_swapInfo.path = new address[](0);
-		_swapInfo.vault = address(0);
-		_swapInfo.swap.poolId = bytes32(0);
-		_swapInfo.swap.kind = IVault.SwapKind.GIVEN_IN;
-		_swapInfo.swap.assetIn = address(0);
-		_swapInfo.swap.assetOut = address(0);
-		_swapInfo.swap.amount = 0;
-		_swapInfo.swap.userData = new bytes(0);
-		_swapInfo.funds.sender = address(0);
-		_swapInfo.funds.fromInternalBalance = false;
-		_swapInfo.funds.recipient = payable(0);
-		_swapInfo.funds.toInternalBalance = false;
-		uint256 _lastIndex = tokens.length - 1;
-		if (_index < _lastIndex) {
-			address _lastToken = tokens[_lastIndex];
-			tokens[_index] = _lastToken;
-			swapInfo[_lastToken].index = _index;
-		}
-		tokens.pop();
-	}
+    function _removeToken(address _token) internal
+    {
+        SwapInfo storage _swapInfo = swapInfo[_token];
+        require(_swapInfo.swapType != SwapType.NONE, "unknown token");
+        uint256 _index = _swapInfo.index;
+        _swapInfo.index = 0;
+        _swapInfo.minAmount = 0;
+        _swapInfo.swapType = SwapType.NONE;
+        _swapInfo.router = address(0);
+        _swapInfo.path = new address[](0);
+        _swapInfo.vault = address(0);
+        _swapInfo.swap.poolId = bytes32(0);
+        _swapInfo.swap.kind = IVault.SwapKind.GIVEN_IN;
+        _swapInfo.swap.assetIn = address(0);
+        _swapInfo.swap.assetOut = address(0);
+        _swapInfo.swap.amount = 0;
+        _swapInfo.swap.userData = new bytes(0);
+        _swapInfo.funds.sender = address(0);
+        _swapInfo.funds.fromInternalBalance = false;
+        _swapInfo.funds.recipient = payable(0);
+        _swapInfo.funds.toInternalBalance = false;
+        uint256 _lastIndex = tokens.length - 1;
+        if (_index < _lastIndex) {
+            address _lastToken = tokens[_lastIndex];
+            tokens[_index] = _lastToken;
+            swapInfo[_lastToken].index = _index;
+        }
+        tokens.pop();
+    }
 
-	function _updateTokenParameters(address _token, uint256 _minAmount, address _routerOrVault, bytes32 _ignoredOrPoolId) internal
-	{
-		SwapInfo storage _swapInfo = swapInfo[_token];
-		require(_swapInfo.swapType != SwapType.NONE, "unknown token");
-		_swapInfo.minAmount = _minAmount;
-		if (_swapInfo.swapType == SwapType.UNISWAP_V2) {
-			_swapInfo.router = _routerOrVault;
-		}
-		else
-		if (_swapInfo.swapType == SwapType.BALANCER_V2) {
-			_swapInfo.vault = _routerOrVault;
-			_swapInfo.swap.poolId  = _ignoredOrPoolId;
-		}
-	}
+    function _updateTokenParameters(address _token, uint256 _minAmount, address _routerOrVault, bytes32 _ignoredOrPoolId) internal
+    {
+        SwapInfo storage _swapInfo = swapInfo[_token];
+        require(_swapInfo.swapType != SwapType.NONE, "unknown token");
+        _swapInfo.minAmount = _minAmount;
+        if (_swapInfo.swapType == SwapType.UNISWAP_V2) {
+            _swapInfo.router = _routerOrVault;
+        }
+        else
+        if (_swapInfo.swapType == SwapType.BALANCER_V2) {
+            _swapInfo.vault = _routerOrVault;
+            _swapInfo.swap.poolId  = _ignoredOrPoolId;
+        }
+    }
 
-	function recoverLostFunds(address _token) external onlyOwner nonReentrant //delayed
-	{
-		require(_token != escrowToken, "invalid token");
-		SwapInfo storage _swapInfo = swapInfo[_token];
-		require(_swapInfo.swapType == SwapType.NONE, "invalid token");
-		uint256 _balance = IERC20(_token).balanceOf(address(this));
-		IERC20(_token).safeTransfer(treasury, _balance);
-	}
+    function recoverLostFunds(address _token) external onlyOwner nonReentrant //delayed
+    {
+        // require(_token != escrowToken, "invalid token");
+        SwapInfo storage _swapInfo = swapInfo[_token];
+        require(_swapInfo.swapType == SwapType.NONE, "invalid token");
+        uint256 _balance = IERC20(_token).balanceOf(address(this));
+        IERC20(_token).safeTransfer(treasury, _balance);
+    }
 
     /**
      * COLTRANE NOTES
      */
-	function gulp() external onlyEOA nonReentrant
-	{
+    function gulp() external onlyEOA nonReentrant
+    {
         // swap all the tokens to WFTM
         
-		for (uint256 _i = 0; _i < tokens.length; _i++) {
-			address _token = tokens[_i];
-			SwapInfo storage _swapInfo = swapInfo[_token];
-			uint256 _balance = IERC20(_token).balanceOf(address(this));
-			if (_balance < _swapInfo.minAmount) continue;
-			uint256 _estimate = 1;
+        for (uint256 _i = 0; _i < tokens.length; _i++) {
+            address _token = tokens[_i];
+            SwapInfo storage _swapInfo = swapInfo[_token];
+            uint256 _balance = IERC20(_token).balanceOf(address(this));
+            if (_balance < _swapInfo.minAmount) continue;
+            uint256 _estimate = 1;
             // we are no longer doing shares
-			// if (_token == $.LQDR) {
-			// 	_estimate = PerpetualEscrowToken(escrowToken).calcSharesFromAmount(_balance);
-			// }
-			if (_swapInfo.swapType == SwapType.UNISWAP_V2) {
-				address _router = _swapInfo.router;
-				uint256 _factor = _oracleAveragePriceFactorFromInput(_router, _swapInfo.path, _balance);
-				if (_factor < minimalGulpFactor) continue;
-				IERC20(_token).safeApprove(_router, _balance);
+            // if (_token == $.LQDR) {
+            //  _estimate = PerpetualEscrowToken(escrowToken).calcSharesFromAmount(_balance);
+            // }
+            if (_swapInfo.swapType == SwapType.UNISWAP_V2) {
+                address _router = _swapInfo.router;
+                uint256 _factor = _oracleAveragePriceFactorFromInput(_router, _swapInfo.path, _balance);
+                if (_factor < minimalGulpFactor) continue;
+                IERC20(_token).safeApprove(_router, _balance);
 
                 // NOT SURE WHAT THIS ERROR IS ALL ABOUT
-				try Router02(_router).swapExactTokensForTokens(_balance, _estimate, _swapInfo.path, address(this), block.timestamp) {
-					continue;
-				} catch (bytes memory _error) {
+                try Router02(_router).swapExactTokensForTokens(_balance, _estimate, _swapInfo.path, address(this), block.timestamp) {
+                    continue;
+                } catch (bytes memory _error) {
                     // NOT SURE WHAT THIS IS?
                     // WHY DOES LQDR set APPROVAL to 0???
-					require(_token == $.LQDR, string(_error));
-					IERC20(_token).safeApprove(_router, 0);
-				}
-			}
-			else if (_swapInfo.swapType == SwapType.BALANCER_V2) {
-				address _vault = _swapInfo.vault;
-				IERC20(_token).safeApprove(_vault, _balance);
-				_swapInfo.swap.amount = _balance;
-				try IVault(_vault).swap(_swapInfo.swap, _swapInfo.funds, _estimate, block.timestamp) {
-					continue;
-				} catch (bytes memory _error) {
+                    require(_token == $.LQDR, string(_error));
+                    IERC20(_token).safeApprove(_router, 0);
+                }
+            }
+            else if (_swapInfo.swapType == SwapType.BALANCER_V2) {
+                address _vault = _swapInfo.vault;
+                IERC20(_token).safeApprove(_vault, _balance);
+                _swapInfo.swap.amount = _balance;
+                try IVault(_vault).swap(_swapInfo.swap, _swapInfo.funds, _estimate, block.timestamp) {
+                    continue;
+                } catch (bytes memory _error) {
                     // NOT SURE WHAT THIS IS
                     // WHY DOES LQDR SET APPROVAL TO 0??
-					require(_token == $.LQDR, string(_error));
-					IERC20(_token).safeApprove(_vault, 0);
-				}
-			}
+                    require(_token == $.LQDR, string(_error));
+                    IERC20(_token).safeApprove(_vault, 0);
+                }
+            }
             // we are no longer doing shares, nor are we buying back from the escrow token
             // IERC20(_token).safeApprove(escrowToken, _balance);
-			// PerpetualEscrowToken(escrowToken).deposit(_balance, _estimate);
-		}
-		{
+            // PerpetualEscrowToken(escrowToken).deposit(_balance, _estimate);
+        }
+        {
             /**
              * COLTRANE NOTES
              */
-			// uint256 _balance = IERC20(escrowToken).balanceOf(address(this));
-			uint256 _balance = IERC20($.WFTM).balanceOf(address(this));
-			if (_balance > 0) {
+            // uint256 _balance = IERC20(escrowToken).balanceOf(address(this));
+            uint256 _balance = IERC20($.WFTM).balanceOf(address(this));
+            if (_balance > 0) {
                 // sudo code
                 
-                IERC20($.WFTM).safeTransfer(recipient, _amount);
-                ConstantNeo(recipieint).updateRewardPerSec(_amount);
+                IERC20($.WFTM).safeTransfer(recipient, _balance);
+                ConstantNeo(recipient).updateRewardPerSec(_balance);
 
-				// uint256 _burning = _balance * burningRate / 1e18;
-				// PerpetualEscrowToken(escrowToken).burn(_burning);
-				// uint256 _amount = _balance - _burning;
-				// IERC20(escrowToken).safeTransfer(recipient, _amount);
-			}
-		}
-	}
+                // uint256 _burning = _balance * burningRate / 1e18;
+                // PerpetualEscrowToken(escrowToken).burn(_burning);
+                // uint256 _amount = _balance - _burning;
+                // IERC20(escrowToken).safeTransfer(recipient, _amount);
+            }
+        }
+    }
 
-	function _oracleAveragePriceFactorFromInput(address _router, address[] memory _path, uint256 _inputAmount) internal returns (uint256 _factor)
-	{
-		require(_inputAmount > 0, "invalid amount");
-		address _factory = Router02(_router).factory();
-		_factor = 1e18;
-		uint256 _amount = _inputAmount;
-		for (uint256 _i = 1; _i < _path.length; _i++) {
-			address _tokenA = _path[_i - 1];
-			address _tokenB = _path[_i];
-			address _pool = Factory(_factory).getPair(_tokenA, _tokenB);
-			IOracle(oracle).updateAveragePrice(_pool);
-			uint256 _averageOutputAmount = IOracle(oracle).consultAveragePrice(_pool, _tokenA, _amount);
-			uint256 _currentOutputAmount = IOracle(oracle).consultCurrentPrice(_pool, _tokenA, _amount);
-			_factor = _currentOutputAmount * _factor / _averageOutputAmount;
-			_amount = _currentOutputAmount;
-		}
-		return _factor;
-	}
+    function _oracleAveragePriceFactorFromInput(address _router, address[] memory _path, uint256 _inputAmount) internal returns (uint256 _factor)
+    {
+        require(_inputAmount > 0, "invalid amount");
+        address _factory = Router02(_router).factory();
+        _factor = 1e18;
+        uint256 _amount = _inputAmount;
+        for (uint256 _i = 1; _i < _path.length; _i++) {
+            address _tokenA = _path[_i - 1];
+            address _tokenB = _path[_i];
+            address _pool = Factory(_factory).getPair(_tokenA, _tokenB);
+            IOracle(oracle).updateAveragePrice(_pool);
+            uint256 _averageOutputAmount = IOracle(oracle).consultAveragePrice(_pool, _tokenA, _amount);
+            uint256 _currentOutputAmount = IOracle(oracle).consultCurrentPrice(_pool, _tokenA, _amount);
+            _factor = _currentOutputAmount * _factor / _averageOutputAmount;
+            _amount = _currentOutputAmount;
+        }
+        return _factor;
+    }
 
-	event UpdateTreasury(address _oldTreasury, address _newTreasury);
-	event UpdateRecipient(address _oldRecipient, address _newRecipient);
-	event UpdateOracle(address _oldOracle, address _newOracle);
-	event UpdateMinimalGulpFactor(uint256 _oldMinimalGulpFactor, uint256 _newMinimalGulpFactor);
-	event UpdateBurningRate(uint256 _oldBurningRate, uint256 _newBurningRate);
+    event UpdateTreasury(address _oldTreasury, address _newTreasury);
+    event UpdateRecipient(address _oldRecipient, address _newRecipient);
+    event UpdateOracle(address _oldOracle, address _newOracle);
+    event UpdateMinimalGulpFactor(uint256 _oldMinimalGulpFactor, uint256 _newMinimalGulpFactor);
+    event UpdateBurningRate(uint256 _oldBurningRate, uint256 _newBurningRate);
 }
