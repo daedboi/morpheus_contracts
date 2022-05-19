@@ -1338,7 +1338,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 	mapping(address => SwapInfo) public swapInfo;
 
     /**
-     * COLTRANE NOTES
+     * NOTES
      */
 	constructor(/*address _escrowToken,*/ address _masterchef, address _recipient, address _treasury, address _oracle)
 	{
@@ -1528,7 +1528,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 	}
 
     /**
-     * COLTRANE NOTES
+     * NOTES
      */
 	function gulp() external onlyEOA nonReentrant
 	{
@@ -1579,7 +1579,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 		}
 		{
             /**
-             * COLTRANE NOTES
+             * NOTES
              */
 			// uint256 _balance = IERC20(escrowToken).balanceOf(address(this));
 			uint256 _balance = IERC20($.WFTM).balanceOf(address(this));
