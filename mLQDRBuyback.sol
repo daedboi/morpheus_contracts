@@ -1352,13 +1352,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         _addBalancerV2Token($.LIHND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_HND_LIHND_SP, $.HND);
         _addBalancerV2Token($.HND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP, $.WFTM);
 
-        // convert LQDR to WFTM now
-        _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, $.WFTM);
-
-
-        // No longer swapping wFTM, as we convert all to wftm, then send to neo pool
-        // _addUniswapV2Token($.WFTM, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.LQDR); 
-        // _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, _escrowToken);
+        _addUniswapV2Token($.LQDR, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
     }
 
     modifier onlyEOA()
@@ -1533,10 +1527,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
             uint256 _balance = IERC20(_token).balanceOf(address(this));
             if (_balance < _swapInfo.minAmount) continue;
             uint256 _estimate = 1;
-            // we are no longer doing shares
-            // if (_token == $.LQDR) {
-            //  _estimate = PerpetualEscrowToken(escrowToken).calcSharesFromAmount(_balance);
-            // }
+
             if (_swapInfo.swapType == SwapType.UNISWAP_V2) {
                 address _router = _swapInfo.router;
                 uint256 _factor = _oracleAveragePriceFactorFromInput(_router, _swapInfo.path, _balance);
@@ -1566,9 +1557,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
                     IERC20(_token).safeApprove(_vault, 0);
                 }
             }
-            // we are no longer doing shares, nor are we buying back from the escrow token
-            // IERC20(_token).safeApprove(escrowToken, _balance);
-            // PerpetualEscrowToken(escrowToken).deposit(_balance, _estimate);
         }
         {
             // uint256 _balance = IERC20(escrowToken).balanceOf(address(this));
