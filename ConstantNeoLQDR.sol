@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
 
-/**
- *Submitted for verification at FtmScan.com on 2021-09-19
-*/
-
 pragma solidity >=0.4.0;
 
 /**
@@ -689,11 +685,11 @@ contract NeoPool is Ownable {
     }
 
     uint public period = 90000; // 25 hours
-    address public morph = 0xDa4062Cf984A861FeBF3cA698f8000AF405B2F0c;
-    address public lqdr = 0x3B382Cc4542eec36Ec4A38Fd227F7cD88e888195;
-    address public mlqdrlp = 0xe3c1eBa1FE820003B3a4A82a77cbA19EC856595e;   
-    address public mlqdr = 0x2f3Bc470A3231A6BB844E70eFAE147CA3c8dc43D;    
-    address public wftm = 0x07B9c47452C41e8E00f98aC4c075F5c443281d2A;
+    address public morph = 0x0789fF5bA37f72ABC4D561D00648acaDC897b32d;
+    address public lqdr = 0x10b620b2dbAC4Faa7D7FFD71Da486f5D44cd86f9;
+    address public mlqdrlp = 0xAC8437279176fB00730da83Acb711Bc502d89226;   
+    address public mlqdr = 0xCa3C69622E22524fF2b6cC24Ee7e654bbF91578a;    
+    address public wftm = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
 
     // uint256 allocPoint;       // How many allocation points assigned to this pool. MORPHs to distribute per second.
     uint256 lastUpdateTimestamp;
@@ -701,7 +697,7 @@ contract NeoPool is Ownable {
     uint256 accMorphPerShare; // Accumulated MORPHs per share, times 1e12. See below.
     uint256 accWFTMPerShare;
 
-    address masterchef = 0x1F0EECfb213D78d09635b57b5639F4Beb81b75d4;
+    address masterchef = 0xc7dad2e953Dc7b11474151134737A007049f576E;
     uint masterchef_pid;
 
     mapping (address => UserInfo) public userInfo;
@@ -864,7 +860,7 @@ contract NeoPool is Ownable {
         lastUpdateTimestamp = block.timestamp;
 
         uint256 oldMorphBalance = IERC20(morph).balanceOf(address(this));
-        IMasterChef(masterchef).deposit(0, masterchef_pid);
+        IMasterChef(masterchef).deposit(masterchef_pid, 0);
         uint256 newMorphAmount = IERC20(morph).balanceOf(address(this)) - oldMorphBalance;
 
         uint256 wftmBalance = IERC20(wftm).balanceOf(address(this));
@@ -958,9 +954,9 @@ contract NeoPool is Ownable {
 
             // check to see if there is pending morph reward (LP staked)
             if (user.amountLP > 0) {
-                uint256 pendingMorph = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
-                if(pendingMorph > 0) {
-                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorph);
+                uint256 pendingMorphReward = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
+                if(pendingMorphReward > 0) {
+                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorphReward);
                     user.rewardDebtMorph = user.amountLP.mul(accMorphPerShare).div(1e12);
                 }
             }
@@ -983,9 +979,9 @@ contract NeoPool is Ownable {
 
             // check to see if there is pending morph reward (LP staked)
             if (user.amountLP > 0) {
-                uint256 pendingMorph = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
-                if(pendingMorph > 0) {
-                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorph);
+                uint256 pendingMorphReward = user.amountLP.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
+                if(pendingMorphReward > 0) {
+                    IERC20(morph).safeTransfer(address(msg.sender), pendingMorphReward);
                 }
             }
 
