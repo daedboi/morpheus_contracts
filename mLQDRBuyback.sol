@@ -1337,9 +1337,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
     address[] public tokens;
     mapping(address => SwapInfo) public swapInfo;
 
-    /**
-     * COLTRANE NOTES
-     */
     constructor(/*address _escrowToken,*/ address _recipient, address _treasury, address _oracle)
     {
         // escrowToken = _escrowToken;
@@ -1526,9 +1523,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         IERC20(_token).safeTransfer(treasury, _balance);
     }
 
-    /**
-     * COLTRANE NOTES
-     */
     function gulp() external onlyEOA nonReentrant
     {
         // swap all the tokens to WFTM
@@ -1577,9 +1571,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
             // PerpetualEscrowToken(escrowToken).deposit(_balance, _estimate);
         }
         {
-            /**
-             * COLTRANE NOTES
-             */
             // uint256 _balance = IERC20(escrowToken).balanceOf(address(this));
             uint256 _balance = IERC20($.WFTM).balanceOf(address(this));
             if (_balance > 0) {
@@ -1587,11 +1578,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
                 
                 IERC20($.WFTM).safeTransfer(recipient, _balance);
                 ConstantNeo(recipient).updateRewardPerSec(_balance);
-
-                // uint256 _burning = _balance * burningRate / 1e18;
-                // PerpetualEscrowToken(escrowToken).burn(_burning);
-                // uint256 _amount = _balance - _burning;
-                // IERC20(escrowToken).safeTransfer(recipient, _amount);
             }
         }
     }
