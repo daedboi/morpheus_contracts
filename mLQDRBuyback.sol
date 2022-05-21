@@ -1352,7 +1352,13 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         _addBalancerV2Token($.LIHND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_HND_LIHND_SP, $.HND);
         _addBalancerV2Token($.HND, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_USDC_HND_WP, $.WFTM);
 
+<<<<<<< HEAD
         _addUniswapV2Token($.LQDR, 1, $.SPIRITSWAP_UNISWAP_V2_ROUTER, $.WFTM);
+=======
+        // convert LQDR to WFTM now
+        _addBalancerV2Token($.LQDR, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_LQDR_cLQDR_SPP, $.WFTM);
+
+>>>>>>> c201f769a2c4a6eb9dfc9ba4336b0538e5879986
     }
 
     modifier onlyEOA()
@@ -1538,8 +1544,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
                 try Router02(_router).swapExactTokensForTokens(_balance, _estimate, _swapInfo.path, address(this), block.timestamp) {
                     continue;
                 } catch (bytes memory _error) {
-                    // NOT SURE WHAT THIS IS?
-                    // WHY DOES LQDR set APPROVAL to 0???
                     require(_token == $.LQDR, string(_error));
                     IERC20(_token).safeApprove(_router, 0);
                 }
@@ -1551,8 +1555,6 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
                 try IVault(_vault).swap(_swapInfo.swap, _swapInfo.funds, _estimate, block.timestamp) {
                     continue;
                 } catch (bytes memory _error) {
-                    // NOT SURE WHAT THIS IS
-                    // WHY DOES LQDR SET APPROVAL TO 0??
                     require(_token == $.LQDR, string(_error));
                     IERC20(_token).safeApprove(_vault, 0);
                 }
