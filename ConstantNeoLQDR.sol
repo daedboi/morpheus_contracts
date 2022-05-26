@@ -816,7 +816,8 @@ contract NeoPool is Ownable {
         UserInfo storage user = userInfo[_user];
 
         uint mlqdrSupply = IERC20(mlqdr).balanceOf(address(this));
-        uint mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this)) / 2;
+        // gets the amount of mlqdr
+        uint mlqdrlpSupply = getStakedValue(IERC20(mlqdrlp).balanceOf(address(this)));
         uint totalSupply = mlqdrSupply + mlqdrlpSupply;
 
         uint _accWFTMPerShare = accWFTMPerShare;
@@ -929,10 +930,12 @@ contract NeoPool is Ownable {
 
         (uint reserve0 ,uint reserve1,) = IPair(mlqdrlp).getReserves();
         uint totalSupply = IPair(mlqdrlp).totalSupply();
-        uint value = ((reserve0 + reserve1) * amount) / totalSupply;
+        // uint value = ((reserve0 + reserve1) * amount) / totalSupply;
+        uint value = ((reserve1) * amount) / totalSupply;
 
         // 50% because mlqdr = lqdr
-        return value / 2;
+        // return value / 2;
+        return value;
     }
 
     // UPDATED
