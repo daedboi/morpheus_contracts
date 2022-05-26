@@ -1325,6 +1325,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         IVault.FundManagement funds;
     }
 
+    uint public fee;
     address public recipient;
 
     address public treasury;
@@ -1366,12 +1367,17 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         return tokens.length;
     }
 
-    function setRecipient(address _newRecipient) external onlyOwner delayed
+    function setRecipient(address _newRecipient) external onlyOwner
     {
         require(_newRecipient != address(0), "invalid address");
         address _oldRecipient = recipient;
         recipient = _newRecipient;
         emit UpdateRecipient(_oldRecipient, _newRecipient);
+    }
+
+    function setFee(uint _fee) external onlyOwner {
+        require(_fee != fee, "already exists");
+        fee = _fee;
     }
 
     function setTreasury(address _newTreasury) external onlyOwner //delayed
@@ -1560,7 +1566,10 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
             if (_balance > 0) {
                 // sudo code
                 
-                IERC20($.WFTM).safeTransfer(recipient, _balance);
+                // take out fee
+                uint _fee = (_balance * fee) / 1000;
+                IERC20($.WFTM).safeTransfer(treasury, _fee);
+                IERC20($.WFTM).safeTransfer(recipient, _balance - _fee);
                 ConstantNeo(recipient).updateRewardPerSec(_balance);
             }
         }
