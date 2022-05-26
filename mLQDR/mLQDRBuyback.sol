@@ -1344,6 +1344,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
         recipient = _recipient;
         treasury = _treasury;
         oracle = _oracle;
+        fee = 50;
         _addUniswapV2Token($.BOO, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
         _addUniswapV2Token($.SPELL, 1, $.SPOOKYSWAP_UNISWAP_V2_ROUTER, $.WFTM);
         _addBalancerV2Token($.BEETS, 1, $.BEETHOVEN_BALANCER_V2_VAULT, $.BEETHOVEN_BALANCER_V2_FTM_BEETS_WP2T, $.WFTM);
@@ -1377,6 +1378,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 
     function setFee(uint _fee) external onlyOwner {
         require(_fee != fee, "already exists");
+        require(_fee <= 75, "fee cannot be more than 7.5%"); 
         fee = _fee;
     }
 
