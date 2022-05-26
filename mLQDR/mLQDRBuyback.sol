@@ -1378,7 +1378,7 @@ contract PerpetualEscrowTokenReceiver is Ownable, ReentrancyGuard, DelayedAction
 
     function setFee(uint _fee) external onlyOwner {
         require(_fee != fee, "already exists");
-        require(_fee <= 75, "fee cannot be more than 7.5%"); 
+        require(_fee <= 70, "fee cannot be more than 7.0%"); 
         fee = _fee;
     }
 
