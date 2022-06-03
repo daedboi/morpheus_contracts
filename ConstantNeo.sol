@@ -715,6 +715,15 @@ contract NeoPool is Ownable {
         oracle = msg.sender;
     }
 
+    // returns total amount of segments
+    function getTotalSegments() public returns (uint len) {
+        len = rewardUpdateTimestamps.length;
+    }
+
+    function getSegmentRewardPerSec() public returns (uint amount) {
+        amount = rewardSegments[rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2]]
+    }
+
     function setOracle(address _oracle) public onlyOwner {
         oracle = _oracle;
     }
@@ -784,7 +793,7 @@ contract NeoPool is Ownable {
 
         uint segment0Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
         uint segment1Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1];
-        if(segment1Timestamp >= block.timestamp) {
+        if(segment1Timestamp <= block.timestamp) {
             outstanding = 0;
         } else {
             uint timeRemaining = segment1Timestamp - block.timestamp;
@@ -852,12 +861,6 @@ contract NeoPool is Ownable {
     // Stake SYRUP tokens to SmartChef
     function deposit(uint256 _amount) public {
         UserInfo storage user = userInfo[msg.sender];
-
-        // 3.4
-        // if(user.initTimestamp == 0) {
-        //     user.initTimestamp = block.timestamp;
-        //     userAddresses[msg.sender];
-        // }
 
         updatePool();
         if (user.amount > 0) {
