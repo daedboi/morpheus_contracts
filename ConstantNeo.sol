@@ -716,11 +716,11 @@ contract NeoPool is Ownable {
     }
 
     // returns total amount of segments
-    function getTotalSegments() public returns (uint len) {
+    function getTotalSegments() public view returns (uint len) {
         len = rewardUpdateTimestamps.length;
     }
 
-    function getCurrentSegmentRewardPerSec() public returns (uint amount) {
+    function getCurrentSegmentRewardPerSec() public view returns (uint amount) {
         amount = rewardSegments[rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2]]
     }
 
