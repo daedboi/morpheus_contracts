@@ -720,7 +720,7 @@ contract NeoPool is Ownable {
         len = rewardUpdateTimestamps.length;
     }
 
-    function getSegmentRewardPerSec() public returns (uint amount) {
+    function getCurrentSegmentRewardPerSec() public returns (uint amount) {
         amount = rewardSegments[rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2]]
     }
 
