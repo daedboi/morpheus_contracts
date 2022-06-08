@@ -787,7 +787,7 @@ contract NeoPool is Ownable {
 
     // 3.4
     // returns the total amount of outstanding rewards from the current segment
-    function outstandingRewards() view returns (uint256 outstanding) {
+    function outstandingRewards() public view returns (uint256 outstanding) {
         // pC2
         if(rewardUpdateTimestamps.length == 0) return 0;
 
