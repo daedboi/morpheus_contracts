@@ -16,7 +16,7 @@ pragma solidity ^0.7.0;
 pragma experimental ABIEncoderV2;
 
 import "@balancer-labs/v2-solidity-utils/contracts/helpers/BalancerErrors.sol";
-import "@balancer-labs/v2-solidity-utils/contracts/helpers/ERC20Helpers.sol";
+import "./ERC20Helpers.sol";
 import "@balancer-labs/v2-solidity-utils/contracts/math/FixedPoint.sol";
 
 import "@balancer-labs/v2-pool-utils/contracts/BasePool.sol";
@@ -47,7 +47,7 @@ import "./LinearPoolUserData.sol";
  * traders whose swaps return the balance to the desired region.
  * The net revenue via fees is expected to be zero: all collected fees are used to pay for this 'rebalancing'.
  */
-abstract contract LinearPool is BasePool, IGeneralPool, IRateProvider {
+contract LinearPool is BasePool, IGeneralPool, IRateProvider {
     using WordCodec for bytes32;
     using FixedPoint for uint256;
     using PriceRateCache for bytes32;
@@ -568,11 +568,11 @@ abstract contract LinearPool is BasePool, IGeneralPool, IRateProvider {
         return totalBalance.divUp(_getApproximateVirtualSupply(balances[_bptIndex]));
     }
 
-    function getWrappedTokenRate() external view returns (uint256) {
-        return _getWrappedTokenRate();
-    }
+    // function getWrappedTokenRate() external view returns (uint256) {
+    //     return _getWrappedTokenRate();
+    // }
 
-    function _getWrappedTokenRate() internal view virtual returns (uint256);
+    // function _getWrappedTokenRate() internal view virtual returns (uint256);
 
     function getTargets() public view returns (uint256 lowerTarget, uint256 upperTarget) {
         bytes32 miscData = _getMiscData();
