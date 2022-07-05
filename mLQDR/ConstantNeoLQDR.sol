@@ -722,8 +722,8 @@ contract NeoPool is Ownable {
     // block.timestamp => rewardPerSec during that reward segement
     mapping(uint256 => uint256) public morphRewardSegments;
 
-    event Deposit(address indexed user, address token, uint256 amount);
-    event Withdraw(address indexed user, address token, uint256 amount);
+    event Deposit(address indexed user, uint256 amount);
+    event Withdraw(address indexed user, uint256 amount);
     event EmergencyWithdraw(address indexed user, uint256 amount);
 
     constructor() public {
@@ -967,7 +967,7 @@ contract NeoPool is Ownable {
         user.rewardDebt = user.amount.mul(accWFTMPerShare).div(1e12);
         user.rewardDebtMorph = user.amount.mul(accMorphPerShare).div(1e12);
 
-        emit Deposit(msg.sender, token, _amount);
+        emit Deposit(msg.sender, _amount);
     }
 
     // Withdraw SYRUP tokens from STAKING.
@@ -987,7 +987,7 @@ contract NeoPool is Ownable {
 
         user.rewardDebt = user.amount.mul(accWFTMPerShare).div(1e12);
 
-        emit Withdraw(msg.sender, token, _amount);
+        emit Withdraw(msg.sender, _amount);
     }
 
     // Withdraw without caring about rewards. EMERGENCY ONLY.
