@@ -695,7 +695,7 @@ contract NeoPool is Ownable {
     uint public period = 90000; // 25 hours
     address public morph = 0x0789fF5bA37f72ABC4D561D00648acaDC897b32d;
     address public lqdr = 0x10b620b2dbAC4Faa7D7FFD71Da486f5D44cd86f9;
-    address public mlqdrlp = 0xeCAa1cBd28459d34B766F9195413Cb20122Fb942;   
+    address public mlqdrlp = 0x85660a3538579fDd27DC77D0F22D0c42B92D8114;   
     address public mlqdr = 0xCa3C69622E22524fF2b6cC24Ee7e654bbF91578a;    
     address public wftm = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
 
@@ -930,15 +930,15 @@ contract NeoPool is Ownable {
 
     // NEW
     // get mLQDR value from mLQDR-LQDR LP
-    function getStakedValue(uint amount) public view returns (uint) {
-        if(amount == 0) return 0;
+    // function getStakedValue(uint amount) public view returns (uint) {
+    //     if(amount == 0) return 0;
 
-        (,uint256[] memory balances,) = IVault(0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce).getPoolTokens(0xecaa1cbd28459d34b766f9195413cb20122fb942000200000000000000000120);
-        uint totalSupply = IPair(mlqdrlp).totalSupply();
+    //     (,uint256[] memory balances,) = IVault(0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce).getPoolTokens(0xecaa1cbd28459d34b766f9195413cb20122fb942000200000000000000000120);
+    //     uint totalSupply = IPair(mlqdrlp).totalSupply();
 
-        uint value = (balances[1] * amount) / totalSupply;
-        return value;
-    }
+    //     uint value = (balances[1] * amount) / totalSupply;
+    //     return value;
+    // }
 
     // UPDATED
     function deposit(uint256 _amount) public {
