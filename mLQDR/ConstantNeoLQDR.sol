@@ -727,12 +727,6 @@ contract NeoPool is Ownable {
     event EmergencyWithdraw(address indexed user, uint256 amount);
 
     constructor() public {
-        // masterchef = _masterchef;
-        // for testing
-        // pills = _stakingToken;
-        // wftm = _rewardToken;
-
-
         lastRewardTimestamp = block.timestamp;
         accMorphPerShare = 0;
         accWFTMPerShare = 0;
@@ -740,6 +734,11 @@ contract NeoPool is Ownable {
         // to be set later
         oracle = msg.sender;
     }
+
+    // returns total amount of segments	
+    function getTotalSegments() public view returns (uint len) {	
+        len = rewardUpdateTimestamps.length;	
+    }	
 
     function depositDummy(address token) public onlyOwner {
         IERC20(token).approve(masterchef, 1);
@@ -822,11 +821,8 @@ contract NeoPool is Ownable {
     // constant neo
     function pendingReward(address _user) external view returns (uint256) {
         UserInfo storage user = userInfo[_user];
-
-        uint mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this));
         // gets the amount of mlqdr
-        // uint mlqdrlpSupply = getStakedValue(IERC20(mlqdrlp).balanceOf(address(this)));
-        // uint totalSupply = mlqdrSupply + mlqdrlpSupply;
+        uint mlqdrlpSupply = IERC20(mlqdrlp).balanceOf(address(this));
 
         uint _accWFTMPerShare = accWFTMPerShare;
         if (block.timestamp > lastRewardTimestamp && mlqdrlpSupply != 0) {
@@ -849,7 +845,7 @@ contract NeoPool is Ownable {
 
         uint segment0Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 2];
         uint segment1Timestamp = rewardUpdateTimestamps[rewardUpdateTimestamps.length - 1];
-        if(segment1Timestamp >= block.timestamp) {
+        if(segment1Timestamp <= block.timestamp) {
             outstandingWFTM = 0;
             outstandingMorph = 0;
         } else {
@@ -928,18 +924,6 @@ contract NeoPool is Ownable {
         lastRewardTimestamp = block.timestamp;
     }
 
-    // NEW
-    // get mLQDR value from mLQDR-LQDR LP
-    // function getStakedValue(uint amount) public view returns (uint) {
-    //     if(amount == 0) return 0;
-
-    //     (,uint256[] memory balances,) = IVault(0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce).getPoolTokens(0xecaa1cbd28459d34b766f9195413cb20122fb942000200000000000000000120);
-    //     uint totalSupply = IPair(mlqdrlp).totalSupply();
-
-    //     uint value = (balances[1] * amount) / totalSupply;
-    //     return value;
-    // }
-
     // UPDATED
     function deposit(uint256 _amount) public {
         UserInfo storage user = userInfo[msg.sender];
@@ -989,15 +973,6 @@ contract NeoPool is Ownable {
 
         emit Withdraw(msg.sender, _amount);
     }
-
-    // Withdraw without caring about rewards. EMERGENCY ONLY.
-    // function emergencyWithdraw() public {
-    //     UserInfo storage user = userInfo[msg.sender];
-    //     pills.safeTransfer(address(msg.sender), user.amount);
-    //     user.amount = 0;
-    //     user.rewardDebt = 0;
-    //     emit EmergencyWithdraw(msg.sender, user.amount);
-    // }
 
     // Withdraw reward. EMERGENCY ONLY.
     function emergencyRewardWithdrawLqdr(uint256 _amount) public onlyOwner {
