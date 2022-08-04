@@ -814,7 +814,7 @@ contract NeoPool is Ownable {
 
             _accMorphPerShare = _accMorphPerShare.add(rewardPerSec.mul(1e12).div(mlqdrlpSupply));
         }
-        return user.amount.mul(_accMorphPerShare).div(1e12).sub(user.rewardDebt);
+        return user.amount.mul(_accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
     }
 
     // View function to see pending Reward on frontend.
@@ -929,11 +929,6 @@ contract NeoPool is Ownable {
         UserInfo storage user = userInfo[msg.sender];
         updatePool();
 
-        if(_amount > 0) {
-            IERC20(mlqdrlp).safeTransferFrom(address(msg.sender), address(this), _amount);
-            user.amount = user.amount.add(_amount);
-        }
-
         if (user.amount > 0) {
             // wftm rewards
             uint256 pending = user.amount.mul(accWFTMPerShare).div(1e12).sub(user.rewardDebt);
@@ -948,6 +943,11 @@ contract NeoPool is Ownable {
             }
         }
 
+        if(_amount > 0) {
+            IERC20(mlqdrlp).safeTransferFrom(address(msg.sender), address(this), _amount);
+            user.amount = user.amount.add(_amount);
+        }
+
         user.rewardDebt = user.amount.mul(accWFTMPerShare).div(1e12);
         user.rewardDebtMorph = user.amount.mul(accMorphPerShare).div(1e12);
 
@@ -960,16 +960,24 @@ contract NeoPool is Ownable {
         require(user.amount >= _amount, "withdraw: not good");
 
         updatePool();
+        // wftm rewards
         uint256 pending = user.amount.mul(accWFTMPerShare).div(1e12).sub(user.rewardDebt);
         if(pending > 0) {
             IERC20(wftm).safeTransfer(address(msg.sender), pending);
         }
+        // morph rewards
+        uint256 pendingMorphReward = user.amount.mul(accMorphPerShare).div(1e12).sub(user.rewardDebtMorph);
+        if(pendingMorphReward > 0) {
+            IERC20(morph).safeTransfer(address(msg.sender), pendingMorphReward);
+        }
+
         if(_amount > 0) {
             user.amount = user.amount.sub(_amount);
             IERC20(mlqdrlp).safeTransfer(address(msg.sender), _amount);
         }
 
         user.rewardDebt = user.amount.mul(accWFTMPerShare).div(1e12);
+        user.rewardDebtMorph = user.amount.mul(accMorphPerShare).div(1e12);
 
         emit Withdraw(msg.sender, _amount);
     }
